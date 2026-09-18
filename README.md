@@ -1,9 +1,9 @@
 # web_Class
   
 ### 目標
-~~1. 建立最初的html、css、js~~  
-~~2. 設定input~~  
-3. 修改js的功能  
+~~1. 建立最初的html、css、js~~
+~~2. 設定input~~
+3. 修改js的功能
 4. 調整html、css的美觀  
   
 ### 額外新增  
