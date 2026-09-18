@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>北市大臨時停車系統</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <!-- Step 2: 車輛資訊 -->
+  <section class="screen" id="step2">
+    <div class="page">
+      <a href="index.html"><button type="button" class="back-link" id="backBtn">← 上一步</button></a>
+
+      <form id="step2Form">
+        <div class="card" id="vehicleList">
+          <div class="vehicle-group">
+            <div class="field">
+              <label>車號</label>
+              <input type="text" name="plateNo[]" required>
+            </div>
+            <div class="field">
+              <label>駕駛人姓名</label>
+              <input type="text" name="driverName[]" required>
+            </div>
+            <div class="field last">
+              <label>駕駛人手機號碼</label>
+              <input type="tel" name="driverPhone[]" required>
+            </div>
+          </div>
+        </div>
+
+        <button type="button" class="secondary-btn" id="addVehicleBtn">＋</button>
+
+        <button type="submit" class="primary-btn">送出申請</button>
+      </form>
+    </div>
+  </section>
+
+  <script src="script_stepTwo.js"></script>
+</body>
+</html>
