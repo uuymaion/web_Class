@@ -17,29 +17,29 @@
           <div class="field">
             <label for="unit">申請單位/系所</label>
             <p class="hint">*非本校請填寫訪客</p>
-            <input type="text" id="unit" name="unit">
+            <input type="text" id="unit" name="unit" required>
           </div>
 
           <div class="field">
             <label for="eventName">活動名稱</label>
-            <input type="text" id="eventName" name="eventName">
+            <input type="text" id="eventName" name="eventName" required>
           </div>
 
           <div class="field">
             <label for="eventDate">活動/停車日期</label>
-            <input type="text" id="eventDate" name="eventDate">
+            <input type="data" id="eventDate" name="eventDate" required>
           </div>
 
           <div class="field last">
             <label>停車校區</label>
             <div class="checkbox-row">
               <label class="checkbox-option">
-                <input type="checkbox" name="campus" value="博愛校區">
+                <input type="checkbox" name="radio" value="博愛校區" required>
                 <span class="box"></span>
                 博愛校區
               </label>
               <label class="checkbox-option">
-                <input type="checkbox" name="campus" value="天母校區">
+                <input type="checkbox" name="radia" value="天母校區">
                 <span class="box"></span>
                 天母校區
               </label>
@@ -51,28 +51,28 @@
           <div class="field">
             <label for="applicantName">申請人姓名</label>
             <p class="hint">*若申請車輛超過10台，建議僅填寫帶隊聯絡人，並將完整車牌清單寄至總務處信箱</p>
-            <input type="text" id="applicantName" name="applicantName">
+            <input type="text" id="applicantName" name="applicantName" required>
           </div>
 
           <div class="field">
             <label for="applicantEmail">申請人email</label>
-            <input type="email" id="applicantEmail" name="applicantEmail">
+            <input type="email" id="applicantEmail" name="applicantEmail" required>
           </div>
 
           <div class="field">
-            <label for="supervisorName">申請單位主管姓名</label>
-            <input type="text" id="supervisorName" name="supervisorName">
+            <label for="supervisorName">申請人聯絡電話</label>
+            <input type="tel" id="supervisorName" name="supervisorName" required>
           </div>
 
           <div class="field last">
             <label for="supervisorEmail">申請單位主管email</label>
-            <input type="email" id="supervisorEmail" name="supervisorEmail">
+            <input type="email" id="supervisorEmail" name="supervisorEmail" required>
           </div>
         </div>
 
         <div class="card notice-card">
           <label class="checkbox-option notice-title">
-            <input type="checkbox" name="agree" value="agree">
+            <input type="checkbox" name="agree" value="agree" required>
             <span class="box"></span>
             注意事項
           </label>
@@ -83,7 +83,7 @@
             (二)本停車場僅提供車位，對車輛及車內物品不負保管責任，若造成損壞或遺失，概不負責，地震及颱風等天災時亦同。若於校園發生擦撞事故，由雙方人員自行解決，與於本校無涉。
           </p>
           <label class="checkbox-option notice-deadline">
-            <input type="checkbox" name="deadlineAck" value="ack">
+            <input type="checkbox" name="deadlineAck" value="ack" required>
             <span class="box"></span>
             申請期限為活動2日前提出（扣除例假日）
           </label>
