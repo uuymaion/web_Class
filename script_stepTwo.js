@@ -33,3 +33,9 @@ document.addEventListener("DOMContentLoaded", () => {
     sessionStorage.removeItem("step1Data");
   });
 });
+sessionStorage.setItem(
+    "registrationData",
+    JSON.stringify(fullData)
+);
+
+window.location.href = "success.html";
