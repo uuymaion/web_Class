@@ -23,7 +23,6 @@
 
             <div class="card success-card">
 
-                <!-- 成功圖示 -->
                 <div class="success-icon">
                     ✓
                 </div>
@@ -34,8 +33,6 @@
                     您的停車申請已成功送出！
                 </p>
 
-
-                <!-- 登記資料 -->
                 <div class="registration-info">
 
                     <h2>登記資料</h2>
@@ -44,15 +41,11 @@
 
                 </div>
 
-
-                <!-- 回首頁 -->
                 <button
                     type="button"
                     class="primary-btn"
                     onclick="window.location.href='index.html'">
-
                     回到首頁
-
                 </button>
 
             </div>
@@ -62,56 +55,7 @@
     </section>
 
 
-    <script>
-
-        // 取得第二頁送過來的完整資料
-        const data = JSON.parse(
-            sessionStorage.getItem("registrationData") || "{}"
-        );
-
-
-        // 找到顯示車輛資料的區域
-        const vehicleInfo =
-            document.getElementById("vehicleInfo");
-
-
-        // 取得車輛資料
-        const vehicles = data.vehicles || [];
-
-
-        // 一台一台顯示
-        vehicles.forEach((vehicle, index) => {
-
-            const vehicleDiv =
-                document.createElement("div");
-
-            vehicleDiv.className = "vehicle-result";
-
-
-            vehicleDiv.innerHTML = `
-                <p>
-                    <strong>車輛 ${index + 1}</strong>
-                </p>
-
-                <p>
-                    車號：${vehicle.plateNo}
-                </p>
-
-                <p>
-                    駕駛人：${vehicle.driverName}
-                </p>
-
-                <p>
-                    手機：${vehicle.driverPhone}
-                </p>
-            `;
-
-
-            vehicleInfo.appendChild(vehicleDiv);
-
-        });
-
-    </script>
+    <script src="success.js"></script>
 
 </body>
 
