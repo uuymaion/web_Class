@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>登記成功</title>
+
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+
+    <section class="screen">
+
+        <div class="page">
+
+            <div class="card success-card">
+
+                <div class="success-icon">
+                    ✓
+                </div>
+
+                <h1>登記成功</h1>
+
+                <p>您的停車申請已成功送出！</p>
+
+                <div class="registration-info">
+
+                    <p>
+                        <strong>登記人：</strong>
+                        <span id="name">--</span>
+                    </p>
+
+                    <p>
+                        <strong>車號：</strong>
+                        <span id="plateNo">--</span>
+                    </p>
+
+                </div>
+
+                <button
+                    type="button"
+                    class="primary-btn"
+                    onclick="window.location.href='index.html'">
+                    回到首頁
+                </button>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <script>
+
+        // 取得第二頁送過來的資料
+        const data = JSON.parse(
+            sessionStorage.getItem("registrationData") || "{}"
+        );
+
+        // 顯示登記人
+        document.getElementById("name").textContent =
+            data.name || "未提供";
+
+        // 顯示車號
+        document.getElementById("plateNo").textContent =
+            data.plateNo || "未提供";
+
+    </script>
+
+</body>
+
+</html>
