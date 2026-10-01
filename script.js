@@ -9,7 +9,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // 開始日期只能選今天以後
   startDate.min = new Date().toISOString().split("T")[0];
-
   // 選了開始日期之後，結束日期的最小值跟著變
   startDate.addEventListener("change", () => {
     endDate.min = startDate.value;

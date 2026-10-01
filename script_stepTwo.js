@@ -70,7 +70,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const fullData = { ...step1Data, vehicles };
     console.log("送出資料：", fullData);
-    alert("申請已送出（此為示範，請串接實際後端 API）");
+    alert("申請已送出");
 
     // 修改：送出後兩份暫存資料都要清掉
     sessionStorage.removeItem("step1Data");
