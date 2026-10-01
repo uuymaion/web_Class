@@ -101,6 +101,7 @@ body {
 
 .field input[type="text"],
 .field input[type="data"],
+.field input[type="date"],
 .field input[type="email"],
 .field input[type="tel"] {
   width: 100%;

@@ -11,7 +11,6 @@ document.addEventListener("DOMContentLoaded", () => {
       // querySelectorAll() 是抓出所有符合條件(這邊的是css的某個選擇器，平常也可以放其他css的合法class)的元素，回傳的是 NodeList
       // 並且將NodeList轉成array
 
-
       const inputs = group.querySelectorAll("input");
       return {
         plateNo: inputs[0].value,
