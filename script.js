@@ -16,3 +16,4 @@ document.addEventListener("DOMContentLoaded", () => {
     window.location.href = "stepTwo.html";
   });
 });
+// test
