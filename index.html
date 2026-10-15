@@ -1,98 +1,103 @@
-<!DOCTYPE html>
-<html lang="zh-Hant">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!DOCTYPE html>   <!-- 宣告這是一份 HTML5 文件 -->
+<html lang="zh-Hant">   <!-- 網頁使用繁體中文 -->
+<head>   <!-- 開始設定網頁資訊 -->
+<meta charset="UTF-8">   <!-- 設定文字編碼，避免中文亂碼 -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">   <!-- 讓網頁適應不同裝置的螢幕大小 -->
 <title>北市大臨時停車系統</title>
-<link rel="stylesheet" href="styles.css">
-</head>
-<body>
+<link rel="stylesheet" href="styles.css">   <!-- 引入 CSS 樣式表，控制網頁外觀 -->
+</head>   <!-- 結束網頁資訊設定 -->
+<body>   <!-- 開始網頁主要內容 -->
+
   <!-- Step 1: 申請資料 -->
-  <section class="screen" id="step1">
-    <div class="page">
-      <h1 class="page-title">北市大臨時停車系統</h1>
+  <section class="screen" id="step1">   <!-- 建立第一頁的區塊，class 用於套用樣式，id 用於識別元素 -->
+    <div class="page">   <!-- 建立頁面容器，方便控制整體排版 -->
+      <h1 class="page-title">北市大臨時停車系統</h1>   <!-- 顯示網頁主標題 -->
 
-      <form class="parking-form" id="step1Form">
-        <div class="card">
-          <div class="field">
-            <label for="unit">申請單位/系所</label>
-            <p class="hint">*非本校請填寫訪客</p>
-            <input type="text" id="unit" name="unit" required>
-          </div>
+      <form class="parking-form" id="step1Form">   <!-- 建立表單，id 讓 JavaScript 可以取得這份表單 -->
+        <div class="card">   <!-- 建立第一張卡片，放置活動相關資料 -->
+          <div class="field">   <!-- 建立一個輸入欄位區塊 -->
+            <label for="unit">申請單位/系所</label>   <!-- 顯示欄位名稱，for 對應輸入框的 id -->
+            <p class="hint">*非本校請填寫訪客</p>   <!-- 顯示輸入提示，hint 用於套用提示文字樣式 -->
+            <input type="text" id="unit" name="unit" required>   <!-- 建立文字輸入框，required 表示必填 -->
+          </div>   <!-- 結束申請單位欄位 -->
 
-          <div class="field">
-            <label for="eventName">活動名稱</label>
-            <input type="text" id="eventName" name="eventName" required>
-          </div>
+          <div class="field">   <!-- 建立活動名稱欄位 -->
+            <label for="eventName">活動名稱</label>   <!-- 顯示活動名稱標籤 -->
+            <input type="text" id="eventName" name="eventName" required>   <!-- 建立活動名稱文字輸入框，必須填寫 -->
+          </div>   <!-- 結束活動名稱欄位 -->
 
-          <div class="field">
-            <label for="eventDate">活動/停車日期</label>
-            <input type="data" id="eventDate" name="eventDate" required>
-          </div>
+          <div class="field">   <!-- 建立活動日期欄位 -->
+            <label for="eventDate">活動/停車日期</label>   <!-- 顯示活動或停車日期標籤 -->
+            <input type="data" id="eventDate" name="eventDate" required>   <!-- 建立日期輸入欄位；注意 type="data" 應改成 type="date" -->
+          </div>   <!-- 結束活動日期欄位 -->
 
-          <div class="field last">
+          <div class="field last">   <!-- 建立停車校區欄位，last 可用來設定最後一個欄位的樣式 -->
             <label>停車校區</label>
-            <div class="checkbox-row">
-              <label class="checkbox-option">
-                <input type="checkbox" name="radio" value="博愛校區" required>
-                <span class="box"></span>
-                博愛校區
-              </label>
-              <label class="checkbox-option">
-                <input type="checkbox" name="radia" value="天母校區">
-                <span class="box"></span>
-                天母校區
-              </label>
-            </div>
-          </div>
-        </div>
+            <div class="checkbox-row">   <!-- 將校區選項放在同一個排列區塊 -->
 
-        <div class="card">
-          <div class="field">
-            <label for="applicantName">申請人姓名</label>
-            <p class="hint">*若申請車輛超過10台，建議僅填寫帶隊聯絡人，並將完整車牌清單寄至總務處信箱</p>
-            <input type="text" id="applicantName" name="applicantName" required>
-          </div>
+              <label class="checkbox-option">   <!-- 建立博愛校區的核取方塊選項 -->
+                <input type="checkbox" name="radio" value="博愛校區" required>   <!-- 建立核取方塊，勾選時代表博愛校區；required 要求此選項必須勾選 -->
+                <span class="box"></span>   <!-- 提供 CSS 自訂核取方塊外觀的元素 -->
+                博愛校區   <!-- 顯示博愛校區文字 -->
+              </label>   <!-- 結束博愛校區選項 -->
 
-          <div class="field">
-            <label for="applicantEmail">申請人email</label>
-            <input type="email" id="applicantEmail" name="applicantEmail" required>
-          </div>
+              <label class="checkbox-option">   <!-- 建立天母校區的核取方塊選項 -->
+                <input type="checkbox" name="radia" value="天母校區">   <!-- 建立天母校區核取方塊；radia 是欄位名稱，目前與上一個不同 -->
+                <span class="box"></span>   <!-- 提供 CSS 自訂核取方塊外觀的元素 -->
+                天母校區   <!-- 顯示天母校區文字 -->
+              </label>   <!-- 結束天母校區選項 -->
+            </div>   <!-- 結束校區選項排列區塊 -->
+          </div>   <!-- 結束停車校區欄位 -->
+        </div>   <!-- 結束第一張卡片 -->
 
-          <div class="field">
-            <label for="supervisorName">申請人聯絡電話</label>
-            <input type="tel" id="supervisorName" name="supervisorName" required>
-          </div>
+        <div class="card">   <!-- 建立第二張卡片，放置申請人資料 -->
+          <div class="field">   <!-- 建立申請人姓名欄位 -->
+            <label for="applicantName">申請人姓名</label>   <!-- 顯示申請人姓名標籤 -->
+            <p class="hint">*若申請車輛超過10台，建議僅填寫帶隊聯絡人，並將完整車牌清單寄至總務處信箱</p>   <!-- 顯示申請車輛超過 10 台時的注意事項 -->
+            <input type="text" id="applicantName" name="applicantName" required>   <!-- 建立申請人姓名輸入框，必須填寫 -->
+          </div>   <!-- 結束申請人姓名欄位 -->
 
-          <div class="field last">
-            <label for="supervisorEmail">申請單位主管email</label>
-            <input type="email" id="supervisorEmail" name="supervisorEmail" required>
-          </div>
-        </div>
+          <div class="field">   <!-- 建立申請人 Email 欄位 -->
+            <label for="applicantEmail">申請人email</label>   <!-- 顯示申請人 Email 標籤 -->
+            <input type="email" id="applicantEmail" name="applicantEmail" required>   <!-- 建立 Email 輸入框，必須符合基本 Email 格式 -->
+          </div>   <!-- 結束申請人姓名欄位 -->
 
-        <div class="card notice-card">
-          <label class="checkbox-option notice-title">
-            <input type="checkbox" name="agree" value="agree" required>
-            <span class="box"></span>
-            注意事項
-          </label>
+          <div class="field">   <!-- 建立申請人聯絡電話欄位 -->
+            <label for="supervisorName">申請人聯絡電話</label>   <!-- 顯示聯絡電話標籤；目前 for 的名稱與用途不一致 -->
+            <input type="tel" id="supervisorName" name="supervisorName" required>   <!-- 建立電話輸入框；建議將 id 和 name 改成 applicantPhone -->
+          </div>   <!-- 結束申請人聯絡電話欄位 -->
+
+          <div class="field last">   <!-- 建立最後一個欄位，last 可用來調整欄位間距 -->
+            <label for="supervisorEmail">申請單位主管email</label>   <!-- 顯示主管 Email 標籤 -->
+            <input type="email" id="supervisorEmail" name="supervisorEmail" required>   <!-- 建立主管 Email 輸入框，必須填寫 -->
+          </div>   <!-- 結束主管 Email 欄位 -->
+        </div>   <!-- 結束第二張卡片 -->
+
+        <div class="card notice-card">   <!-- 建立注意事項卡片，notice-card 可設定專屬樣式 -->
+          <label class="checkbox-option notice-title">   <!-- 建立注意事項的勾選選項 -->
+            <input type="checkbox" name="agree" value="agree" required>   <!-- 建立同意核取方塊，必須勾選 -->
+            <span class="box"></span>   <!-- 提供 CSS 自訂核取方塊外觀的元素 -->
+            注意事項   <!-- 顯示注意事項標題 -->
+          </label>   <!-- 結束注意事項勾選選項 -->
+
           <p class="notice-text">
             (一)車輛進出停車場一律按規定路線、限速行駛，並應停在停車格內，不得任意停放妨礙交通，違規者將拒絕再次申請。
           </p>
           <p class="notice-text">
             (二)本停車場僅提供車位，對車輛及車內物品不負保管責任，若造成損壞或遺失，概不負責，地震及颱風等天災時亦同。若於校園發生擦撞事故，由雙方人員自行解決，與於本校無涉。
           </p>
-          <label class="checkbox-option notice-deadline">
-            <input type="checkbox" name="deadlineAck" value="ack" required>
-            <span class="box"></span>
-            申請期限為活動2日前提出（扣除例假日）
-          </label>
-        </div>
 
-        <a href="stepTwo.html"><button type="submit" class="primary-btn">下一步</button></a>
-      </form>
-    </div>
-  </section>
-  <script src="script.js"></script>
-</body>
-</html>
+          <label class="checkbox-option notice-deadline">   <!-- 建立申請期限確認選項 -->
+            <input type="checkbox" name="deadlineAck" value="ack" required>   <!-- 建立申請期限核取方塊，必須勾選 -->
+            <span class="box"></span>   <!-- 提供 CSS 自訂核取方塊外觀的元素 -->
+            申請期限為活動2日前提出（扣除例假日）   <!-- 顯示申請期限說明 -->
+          </label>   <!-- 結束申請期限確認選項 -->
+        </div>   <!-- 結束注意事項卡片 -->
+
+        <a href="stepTwo.html"><button type="submit" class="primary-btn">下一步</button></a>   <!-- 建立下一步按鈕；目前按鈕放在連結中，建議改由 JavaScript 驗證表單後再跳轉 -->
+      </form>   <!-- 結束表單 -->
+    </div>   <!-- 結束頁面容器 -->
+  </section>   <!-- 結束第一頁區塊 -->
+  <script src="script.js"></script>   <!-- 載入 JavaScript，處理表單驗證、按鈕事件及資料操作 -->
+</body>   <!-- 結束網頁主要內容 -->
+</html>   <!-- 結束 HTML 文件 -->
