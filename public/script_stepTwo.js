@@ -2,6 +2,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const step2Form = document.getElementById("step2Form");
   const backBtn = document.getElementById("backBtn");
   const addVehicleBtn = document.getElementById("addVehicleBtn");
+  const maxVehiclue = 10;
   const vehicleList = document.getElementById("vehicleList");
 
   // 新增：把畫面上所有 .vehicle-group 的資料收集成陣列
@@ -54,6 +55,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // 新增一組車輛欄位（沒有變，跟原本一樣）
   addVehicleBtn.addEventListener("click", () => {
+    const count = vehicleList.querySelectorAll(".vehicle-group").length;
+    if(count>=maxVehiclue) return;
+
     const firstGroup = vehicleList.querySelector(".vehicle-group");
     const newGroup = firstGroup.cloneNode(true);
     newGroup.querySelectorAll("input").forEach((input) => (input.value = ""));
@@ -76,10 +80,9 @@ document.addEventListener("DOMContentLoaded", () => {
     sessionStorage.removeItem("step1Data");
     sessionStorage.removeItem("step2Data");
   });
-});
-sessionStorage.setItem(
+  sessionStorage.setItem(
     "registrationData",
     JSON.stringify(fullData)
-);
-
-window.location.href = "success.html";
+  );
+  window.location.href = "success.html";
+});

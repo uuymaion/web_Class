@@ -5,13 +5,20 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>北市大臨時停車系統</title>
 <link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="styles_stepOne.css">
 </head>
 <body>
   <!-- Step 1: 申請資料 -->
   <section class="screen" id="step1">
     <div class="page">
       <h1 class="page-title">北市大臨時停車系統</h1>
-
+      <div class="step-indicator">
+        <p class="step-text">步驟 1 / 2</p>
+        <div class="step-bars">
+          <span class="step-bar active"></span>
+          <span class="step-bar"></span>
+        </div>
+      </div>
       <form class="parking-form" id="step1Form" novalidate> 
         <!-- 新增 novalidate 屬性，阻止瀏覽器自己驗證 -->
         <div class="card">
@@ -94,8 +101,9 @@
             申請期限為活動2日前提出（扣除例假日）
           </label>
         </div>
-
-        <a href="stepTwo.html"><button type="submit" class="primary-btn">下一步</button></a>
+        <div class="bottom-bar">
+          <a href="stepTwo.html"><button type="submit" class="primary-btn">下一步</button></a>
+        </div>
       </form>
     </div>
   </section>
