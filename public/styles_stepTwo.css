@@ -7,8 +7,9 @@
   margin: 0 0 8px;
   font-size: 12px; 
   font-weight: 400;
-  color: var(--input-bg);
-  line-height: 1.5;
+  color: var(--text-secondary);
+  line-height: 0.5;
+  margin: -8px 0 -4px;
 }
 .addcar-btn{
   width: 100%;

@@ -21,7 +21,7 @@
         <div class="card" id="vehicleList">
           <div class="vehicle-group">
             <div class="field">
-              <label>車號</label>
+              <label class="plate-label">車號 1</label>
               <input type="text" name="plateNo[]" required>
             </div>
             <div class="field">
@@ -34,10 +34,10 @@
             </div>
           </div>
         </div>
-        <p class="hint">*申請車輛至多10台</p>
+        <p class="hint-car">*申請車輛至多10台(已登記 <span id="vehicleCount">1</span> / 10)</p>
         <button type="button" class="addcar-btn" id="addVehicleBtn">＋</button>
         <div class="bottom-bar">
-          <a href="index.html"><button type="button" class="secondary-btn" id="backBtn">上一步</button></a>
+          <a href="stepOne.html"><button type="button" class="secondary-btn" id="backBtn">上一步</button></a>
           <button type="submit" class="primary-btn">送出申請</button>
         </div>
       </form>
