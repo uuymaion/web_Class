@@ -93,7 +93,7 @@ body {
 
 .hint {
   margin: 0 0 8px;
-  font-size: 12px;
+  font-size: 12px; 
   font-weight: 600;
   color: var(--text-secondary);
   line-height: 1.5;
@@ -101,6 +101,7 @@ body {
 
 .field input[type="text"],
 .field input[type="data"],
+.field input[type="date"],
 .field input[type="email"],
 .field input[type="tel"] {
   width: 100%;
