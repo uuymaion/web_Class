@@ -12,7 +12,8 @@
     <div class="page">
       <h1 class="page-title">北市大臨時停車系統</h1>
 
-      <form class="parking-form" id="step1Form">
+      <form class="parking-form" id="step1Form" novalidate> 
+        <!-- 新增 novalidate 屬性，阻止瀏覽器自己驗證 -->
         <div class="card">
           <div class="field">
             <label for="unit">申請單位/系所</label>
@@ -26,20 +27,25 @@
           </div>
 
           <div class="field">
-            <label for="eventDate">活動/停車日期</label>
-            <input type="data" id="eventDate" name="eventDate" required>
+            <label for="eventDate">活動/停車起始日期</label>
+            <input type="date" id="eventDate" name="startDate" required>
           </div>
+          <div class="field">
+            <label for="eventDate">活動/停車結束日期</label>
+            <input type="date" id="eventDate" name="endDate" required>
+          </div>
+          <!-- 只能選今天以後，並且結束日期不能早於開始日期 -->
 
           <div class="field last">
             <label>停車校區</label>
             <div class="checkbox-row">
               <label class="checkbox-option">
-                <input type="checkbox" name="radio" value="博愛校區" required>
+                <input type="radio" name="area" value="博愛校區" required>
                 <span class="box"></span>
                 博愛校區
               </label>
               <label class="checkbox-option">
-                <input type="checkbox" name="radia" value="天母校區">
+                <input type="radio" name="area" value="天母校區" required>
                 <span class="box"></span>
                 天母校區
               </label>
@@ -96,3 +102,4 @@
   <script src="script.js"></script>
 </body>
 </html>
+
