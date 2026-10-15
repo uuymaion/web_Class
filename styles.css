@@ -55,13 +55,6 @@ body {
   margin: 8px 0 20px;
 }
 
-.parking-form,
-#step2Form {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-}
-
 .card {
   background: var(--card-bg);
   border-radius: var(--radius-card);
