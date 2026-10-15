@@ -5,15 +5,23 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>北市大臨時停車系統</title>
 <link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="styles_stepTwo.css">
 </head>
 <body>
   <section class="screen" id="step2">
     <div class="page">
+      <div class="step-indicator">
+        <p class="step-text">步驟 2 / 2</p>
+        <div class="step-bars">
+          <span class="step-bar"></span>
+          <span class="step-bar active"></span>
+        </div>
+      </div>
       <form id="step2Form" novalidate>
         <div class="card" id="vehicleList">
           <div class="vehicle-group">
             <div class="field">
-              <label>車號</label>
+              <label class="plate-label">車號 1</label>
               <input type="text" name="plateNo[]" required>
             </div>
             <div class="field">
@@ -26,11 +34,12 @@
             </div>
           </div>
         </div>
-
-        <button type="button" class="secondary-btn" id="addVehicleBtn">＋</button>
-        <a href="index.html"><button type="button" class="secondary-btn" id="backBtn">上一步</button></a>
-
-        <button type="submit" class="primary-btn">送出申請</button>
+        <p class="hint-car">*申請車輛至多10台(已登記 <span id="vehicleCount">1</span> / 10)</p>
+        <button type="button" class="addcar-btn" id="addVehicleBtn">＋</button>
+        <div class="bottom-bar">
+          <a href="stepOne.html"><button type="button" class="secondary-btn" id="backBtn">上一步</button></a>
+          <button type="submit" class="primary-btn">送出申請</button>
+        </div>
       </form>
     </div>
   </section>
