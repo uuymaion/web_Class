@@ -77,3 +77,9 @@ document.addEventListener("DOMContentLoaded", () => {
     sessionStorage.removeItem("step2Data");
   });
 });
+sessionStorage.setItem(
+    "registrationData",
+    JSON.stringify(fullData)
+);
+
+window.location.href = "success.html";
