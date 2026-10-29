@@ -2,8 +2,17 @@ document.addEventListener("DOMContentLoaded", () => {
   const step2Form = document.getElementById("step2Form");
   const backBtn = document.getElementById("backBtn");
   const addVehicleBtn = document.getElementById("addVehicleBtn");
-  const maxVehiclue = 10;
+  const maxVehicle = 10;
   const vehicleList = document.getElementById("vehicleList");
+  const vehicleCountEl = document.getElementById("vehicleCount");
+
+  // 更新車輛數
+  function updateCount() {
+    const count = vehicleList.querySelectorAll(".vehicle-group").length;
+    vehicleCountEl.textContent = count;
+    addVehicleBtn.style.display = count >= maxVehicle ? "none" : ""; 
+    // 超過十輛addVehicleBtn會"none"也就是消失
+  }
 
   // 新增：把畫面上所有 .vehicle-group 的資料收集成陣列
   function collectVehicleData() {
@@ -32,6 +41,7 @@ document.addEventListener("DOMContentLoaded", () => {
       let group = vehicleList.querySelectorAll(".vehicle-group")[index];
       if (!group) {
         group = firstGroup.cloneNode(true);
+        group.querySelector(".plate-label").textContent = `車號 ${index + 1}`;
         vehicleList.appendChild(group);
       }
       const inputs = group.querySelectorAll("input");
@@ -39,6 +49,7 @@ document.addEventListener("DOMContentLoaded", () => {
       inputs[1].value = vehicle.driverName || "";
       inputs[2].value = vehicle.driverPhone || "";
     });
+    updateCount();
   }
 
   // 新增：頁面載入時，檢查有沒有之前存過的車輛資料，有的話還原回畫面
@@ -46,22 +57,25 @@ document.addEventListener("DOMContentLoaded", () => {
   if (savedStep2) {
     restoreVehicleData(JSON.parse(savedStep2));
   }
+  updateCount(); 
 
   // 修改：回到第一頁之前，先把目前 step2 的資料存起來
   backBtn.addEventListener("click", () => {
     sessionStorage.setItem("step2Data", JSON.stringify(collectVehicleData()));
-    window.location.href = "index.html";
+    window.location.href = "stepOne.html";
   });
 
   // 新增一組車輛欄位（沒有變，跟原本一樣）
   addVehicleBtn.addEventListener("click", () => {
     const count = vehicleList.querySelectorAll(".vehicle-group").length;
-    if(count>=maxVehiclue) return;
+    if(count>=maxVehicle) return;
 
     const firstGroup = vehicleList.querySelector(".vehicle-group");
     const newGroup = firstGroup.cloneNode(true);
     newGroup.querySelectorAll("input").forEach((input) => (input.value = ""));
+    newGroup.querySelector(".plate-label").textContent = `車號 ${count + 1}`; 
     vehicleList.appendChild(newGroup);
+    updateCount();
   });
 
   // 送出整份申請
@@ -77,12 +91,9 @@ document.addEventListener("DOMContentLoaded", () => {
     alert("申請已送出");
 
     // 修改：送出後兩份暫存資料都要清掉
+    sessionStorage.setItem("registrationData", JSON.stringify(fullData));
     sessionStorage.removeItem("step1Data");
     sessionStorage.removeItem("step2Data");
+    window.location.href = "success.html";
   });
-  sessionStorage.setItem(
-    "registrationData",
-    JSON.stringify(fullData)
-  );
-  window.location.href = "success.html";
 });
