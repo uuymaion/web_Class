@@ -1,11 +1,11 @@
 :root {
-  --bg: #55565a;
+  --bg: #f4f5f1;
   --card-bg: #ffffff;
-  --text-primary: #2b2b2e;
-  --text-secondary: #6e6e72;
-  --input-border: #d9d9dc;
+  --text-primary: #222222;
+  --text-secondary: #55565a;
+  --input-border: #c9c9c9;
   --input-bg: #ffffff;
-  --accent: #3a3b3f;
+  --accent: #355e4e;
   --radius-card: 18px;
   --radius-input: 8px;
 }
@@ -35,7 +35,7 @@ body {
 
 .page-title {
   text-align: center;
-  color: #f3f3f4;
+  color: var(--text-primary);
   font-size: 22px;
   font-weight: 600;
   letter-spacing: 0.5px;
@@ -47,7 +47,7 @@ body {
   align-items: center;
   background: none;
   border: none;
-  color: #f3f3f4;
+  color: var(--text-secondary);
   font-size: 15px;
   font-weight: 600;
   cursor: pointer;
@@ -72,7 +72,7 @@ body {
 .vehicle-group + .vehicle-group {
   margin-top: 24px;
   padding-top: 20px;
-  border-top: 1px solid #ececec;
+  border-top: 1px solid #e5e5e5;
 }
 
 .field {
@@ -93,7 +93,7 @@ body {
 
 .hint {
   margin: 0 0 8px;
-  font-size: 12px;
+  font-size: 12px; 
   font-weight: 600;
   color: var(--text-secondary);
   line-height: 1.5;
@@ -101,6 +101,7 @@ body {
 
 .field input[type="text"],
 .field input[type="data"],
+.field input[type="date"],
 .field input[type="email"],
 .field input[type="tel"] {
   width: 100%;
@@ -115,7 +116,7 @@ body {
 }
 
 .field input::placeholder {
-  color: #b7b7ba;
+  color: #aaaaaa;
 }
 
 .field input:focus {
@@ -148,7 +149,7 @@ body {
 .checkbox-option .box {
   width: 16px;
   height: 16px;
-  border: 1.5px solid #b7b7ba;
+  border: 1.5px solid #aaaaaa;
   border-radius: 3px;
   display: inline-block;
   position: relative;
@@ -200,7 +201,7 @@ body {
   height: 46px;
   border: none;
   border-radius: var(--radius-input);
-  background: #f3f3f4;
+  background: #ffffff;
   color: var(--bg);
   font-size: 16px;
   font-weight: 700;
@@ -217,7 +218,7 @@ body {
   height: 40px;
   border: none;
   border-radius: var(--radius-input);
-  background: #f3f3f4;
+  background: #ffffff;
   color: var(--bg);
   font-size: 18px;
   font-weight: 700;

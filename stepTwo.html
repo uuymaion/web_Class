@@ -7,12 +7,9 @@
 <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <!-- Step 2: 車輛資訊 -->
   <section class="screen" id="step2">
     <div class="page">
-      <a href="index.html"><button type="button" class="back-link" id="backBtn">← 上一步</button></a>
-
-      <form id="step2Form">
+      <form id="step2Form" novalidate>
         <div class="card" id="vehicleList">
           <div class="vehicle-group">
             <div class="field">
@@ -31,6 +28,7 @@
         </div>
 
         <button type="button" class="secondary-btn" id="addVehicleBtn">＋</button>
+        <a href="index.html"><button type="button" class="secondary-btn" id="backBtn">上一步</button></a>
 
         <button type="submit" class="primary-btn">送出申請</button>
       </form>
