@@ -1,0 +1,53 @@
+#step2Form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+.hint-car {
+  margin: 0 0 8px;
+  font-size: 12px; 
+  font-weight: 400;
+  color: var(--text-secondary);
+  line-height: 0.5;
+  margin: -8px 0 -4px;
+}
+.addcar-btn{
+  width: 100%;
+  height: 40px;
+  border: none;
+  border-radius: var(--radius-input);
+  background: #ffffff;
+  color: var(--text-primary);
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 1;
+  cursor: pointer;
+  transition: opacity 0.15s ease;
+}
+.vehicle-group {
+  position: relative;   /* 讓垃圾桶以這一組為基準定位 */
+}
+
+.delete-btn {
+  position: absolute;
+  top: 0;
+  right: 0;
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  border-radius: 0;
+  width: auto;
+  height: auto;
+  padding: 4px;
+  cursor: pointer;
+  color: #888;
+}
+
+.delete-btn:hover,
+.delete-btn:active,
+.delete-btn:focus {
+  background: transparent;
+  box-shadow: none;
+  outline: none;
+  color: #d93025;
+}
