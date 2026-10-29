@@ -24,3 +24,30 @@
   cursor: pointer;
   transition: opacity 0.15s ease;
 }
+.vehicle-group {
+  position: relative;   /* 讓垃圾桶以這一組為基準定位 */
+}
+
+.delete-btn {
+  position: absolute;
+  top: 0;
+  right: 0;
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  border-radius: 0;
+  width: auto;
+  height: auto;
+  padding: 4px;
+  cursor: pointer;
+  color: #888;
+}
+
+.delete-btn:hover,
+.delete-btn:active,
+.delete-btn:focus {
+  background: transparent;
+  box-shadow: none;
+  outline: none;
+  color: #d93025;
+}

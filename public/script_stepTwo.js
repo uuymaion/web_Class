@@ -8,9 +8,16 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // 更新車輛數
   function updateCount() {
+    const groups = vehicleList.querySelectorAll(".vehicle-group");
     const count = vehicleList.querySelectorAll(".vehicle-group").length;
     vehicleCountEl.textContent = count;
-    addVehicleBtn.style.display = count >= maxVehicle ? "none" : ""; 
+    groups.forEach((group, i) => {
+      group.querySelector(".plate-label").textContent = `車號 ${i + 1}`;
+      group.querySelector(".delete-btn").style.display = count === 1 ? "none" : "";
+    });
+
+    vehicleCountEl.textContent = count;
+    addVehicleBtn.style.display = count >= maxVehicle ? "none" : "";
     // 超過十輛addVehicleBtn會"none"也就是消失
   }
 
@@ -76,6 +83,16 @@ document.addEventListener("DOMContentLoaded", () => {
     newGroup.querySelector(".plate-label").textContent = `車號 ${count + 1}`; 
     vehicleList.appendChild(newGroup);
     updateCount();
+  });
+  // 刪除車輛(事件委派:監聽整個 vehicleList,點到垃圾桶才處理)
+  vehicleList.addEventListener("click", (e) => {
+    const btn = e.target.closest(".delete-btn");
+    if (!btn) return;
+
+    if (vehicleList.querySelectorAll(".vehicle-group").length <= 1) return;
+
+    btn.closest(".vehicle-group").remove();
+    updateCount();   // 重新編號、更新計數、＋ 號會重新出現
   });
 
   // 送出整份申請
