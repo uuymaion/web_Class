@@ -96,16 +96,40 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   // 送出整份申請
-  step2Form.addEventListener("submit", (e) => {
+  step2Form.addEventListener("submit", async (e) => {
+    console.log("submit 被觸發了");
     e.preventDefault();
 
     const step1Data = JSON.parse(sessionStorage.getItem("step1Data") || "{}");
     // 修改：改用 collectVehicleData()，才不會漏掉多台車的資料
     const vehicles = collectVehicleData();
-
     const fullData = { ...step1Data, vehicles };
-    console.log("送出資料：", fullData);
+    // 送給後端存進 data.json
+    const res = await fetch("/api/applications", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(fullData)
+    });
+
+    try {
+      const res = await fetch("/api/applications", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(fullData)
+      });
+
+      if (!res.ok) {
+        alert("送出失敗，請稍後再試");
+        return;
+      }                      // ← 這個 } 關閉 if
+    } catch (err) {          // ← 這個 } 關閉 try，然後接 catch
+      console.error(err);
+      alert("無法連線到伺服器，請確認後端有啟動");
+      return;
+    }                        // ← 這個 } 關閉 catch
+
     alert("申請已送出");
+
 
     // 修改：送出後兩份暫存資料都要清掉
     sessionStorage.setItem("registrationData", JSON.stringify(fullData));
