@@ -1,8 +1,8 @@
-const express = require("express"); // 呼叫套件express
-const fs = require("fs");
+const express = require("express"); // 呼叫套件express，負責接收、回應
+const fs = require("fs"); // 呼叫套件fs，負責讀寫data.js
 
-const app = express();
-app.use(express.json());
+const app = express(); // 建立server並存在變數app裡
+app.use(express.json()); // 
 app.use(express.static("public"));   // 你的 html/css/js 放在 public 資料夾
 
 const FILE = "data.json";
