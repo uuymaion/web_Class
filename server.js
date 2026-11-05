@@ -1,4 +1,4 @@
-const express = require("express");
+const express = require("express"); // 呼叫套件express
 const fs = require("fs");
 
 const app = express();
