@@ -7,8 +7,10 @@ app.use(express.static("public"));
 // app.use()是每個請求都要經過的處理
 // express.json()這行會自動把fetch送來的JSON字串轉換成物件
 // expresss.static("public")把public公開成網頁
+const path = require("path");
 
-const FILE = "data.json";
+app.use(express.static(path.join(__dirname, "public")));
+const FILE = path.join(__dirname, "data.json");
 
 // 檢查檔案是否存在
 const load = () => {

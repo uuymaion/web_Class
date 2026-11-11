@@ -36,6 +36,26 @@ document.addEventListener("DOMContentLoaded", () => {
       };
     });
   }
+    // 檢查每一台車的每個欄位,回傳缺少的欄位清單
+  function validateVehicles() {
+    const groups = vehicleList.querySelectorAll(".vehicle-group");
+    const missing = [];
+
+    groups.forEach((group, i) => {
+      const [plate, name, phone] = group.querySelectorAll("input");
+      const n = i + 1;
+
+      if (!plate.value.trim()) missing.push(`車號 ${n}:車號`);
+      if (!name.value.trim()) missing.push(`車號 ${n}:駕駛人姓名`);
+      if (!phone.value.trim()) {
+        missing.push(`車號 ${n}:駕駛人手機號碼`);
+      } else if (!/^09\d{8}$/.test(phone.value.trim())) {
+        missing.push(`車號 ${n}:手機號碼格式不正確(需為 09 開頭共 10 碼)`);
+      }
+    });
+
+    return missing;
+  }
 
   // 新增：把存起來的車輛陣列，還原成畫面上對應數量的 .vehicle-group，並填回值
   function restoreVehicleData(vehicles) {
@@ -100,6 +120,14 @@ document.addEventListener("DOMContentLoaded", () => {
     console.log("submit 被觸發了");
     e.preventDefault();
 
+    if (!DEBUG) {
+      const missing = validateVehicles();
+      if (missing.length > 0) {
+        alert("尚未輸入以下欄位：\n" + missing.join("\n"));
+        return;
+      }
+    }
+
     const step1Data = JSON.parse(sessionStorage.getItem("step1Data") || "{}");
     // 修改：改用 collectVehicleData()，才不會漏掉多台車的資料
     const vehicles = collectVehicleData();
@@ -112,12 +140,6 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     try {
-      const res = await fetch("/api/applications", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(fullData)
-      });
-
       if (!res.ok) {
         alert("送出失敗，請稍後再試");
         return;

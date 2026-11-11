@@ -59,7 +59,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (!step1Data.startDate || step1Data.startDate.trim() === "")  errors.push("停車起始日期");
     if (!step1Data.endDate || step1Data.endDate.trim() === "")  errors.push("停車結束日期");
 
-    if (errors.length > 0) {
+    if (!DEBUG && errors.length > 0) {
       alert("尚未輸入以下欄位：\n" + errors.join("\n"));
       return;
     }
