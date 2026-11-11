@@ -1,0 +1,159 @@
+/* 查詢結果頁專用樣式(共用的顏色、.card、.primary-btn、.bottom-bar 在 styles.css) */
+
+/* 有 hidden 屬性的就一定要藏起來(避免被其他 display 設定蓋掉) */
+[hidden] {
+  display: none !important;
+}
+
+/* 左上角「← 回到首頁」 */
+.result-back {
+  padding: 0;
+  margin: 0 0 4px;
+  border: none;
+  background: none;
+  box-shadow: none;
+  font-size: 14px;
+  color: var(--text-primary);
+  cursor: pointer;
+}
+
+.result-title {
+  margin: 8px 0 20px;
+  text-align: center;
+  font-size: 22px;
+  font-weight: 700;
+  color: #000;
+}
+
+.loading {
+  text-align: center;
+  color: var(--text-secondary);
+}
+
+/* 一筆申請 = 一張主卡片 + 兩張可展開的詳細卡片 */
+.result-group {
+  margin-bottom: 22px;
+}
+
+.result-group .card + .card {
+  margin-top: 14px;
+}
+
+.result-card,
+.detail-card {
+  padding: 6px 20px 18px;
+}
+
+/* 一列：左邊標題、中間內容、右邊(可有)按鈕，下方有分隔線 */
+.info-row {
+  display: grid;
+  grid-template-columns: 92px 1fr auto;
+  align-items: center;
+  column-gap: 8px;
+  min-height: 52px;
+  padding: 8px 0;
+  border-bottom: 1px solid #6b6b6f;
+  font-size: 15px;
+}
+
+.info-value {
+  font-size: 14px;
+  overflow-wrap: anywhere; /* 很長的 email 會自動換行 */
+}
+
+/* 卡片的最後一列不要分隔線(詳細卡片、駕駛人卡片) */
+.detail-card .info-row:last-child,
+.result-card .info-row:last-child {
+  border-bottom: none;
+}
+
+/* 灰色小按鈕：更多申請資料 / 點擊查看 / 收起 */
+.pill-btn {
+  height: 30px;
+  padding: 0 14px;
+  border: none;
+  border-radius: 6px;
+  background: #58595c;
+  color: #fff;
+  font-size: 13px;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.pill-btn:hover {
+  background: #3f4043;
+}
+
+/* 申請狀態的顏色 */
+.status-ok {
+  color: var(--accent);
+  font-weight: 600;
+}
+
+.status-pending {
+  color: #d93025;
+  font-weight: 600;
+}
+
+.status-cancel {
+  color: #8a8a8e;
+  font-weight: 600;
+}
+
+.card-note {
+  margin: 10px 0 8px;
+  font-size: 11px;
+  color: var(--text-secondary);
+}
+
+/* 三顆操作按鈕：編輯並重新送審 / 重發郵件 / 取消 */
+.action-row {
+  display: flex;
+  gap: 8px;
+}
+
+.action-btn {
+  flex: 1;
+  height: 32px;
+  padding: 0 4px;
+  border-radius: 6px;
+  background: #fff;
+  font-size: 13px;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.action-edit {
+  flex: 1.5;
+  border: 1px solid var(--accent);
+  color: var(--accent);
+}
+
+.action-resend {
+  border: 1px solid #8a8a8e;
+  color: #58595c;
+}
+
+.action-cancel {
+  border: 1px solid #d93025;
+  color: #d93025;
+}
+
+.action-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+/* 查無資料 / 錯誤訊息 */
+.empty-card {
+  text-align: center;
+  padding: 24px 20px;
+}
+
+.empty-card p {
+  margin: 0 0 8px;
+}
+
+.empty-card .hint {
+  margin-bottom: 16px;
+}

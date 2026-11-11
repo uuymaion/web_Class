@@ -1,0 +1,64 @@
+/* 首頁專用樣式(共用的顏色、字型、.page 在 styles.css) */
+
+.home-page {
+  display: flex;
+  flex-direction: column;
+  justify-content: center; /* 內容垂直置中 */
+  min-height: 100vh;
+}
+
+.home-title {
+  margin: 0 0 28px;
+  text-align: center;
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  color: #000;
+}
+
+.menu-list {
+  width: 72%;
+  min-width: 240px;
+  max-width: 300px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+
+.menu-btn {
+  position: relative; /* 讓右邊的 > 可以靠右定位 */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 40px;
+  border-radius: 6px;
+  font-size: 18px;
+  font-weight: 700;
+  text-decoration: none;
+  box-shadow: var(--shadow);
+  transition: opacity 0.15s ease;
+}
+
+.menu-btn .chevron {
+  position: absolute;
+  right: 14px;
+}
+
+/* 查詢：深綠底白字 */
+.menu-btn-filled {
+  background: var(--accent);
+  border: 1px solid var(--accent);
+  color: #fff;
+}
+
+/* 登記：白底綠字 */
+.menu-btn-outline {
+  background: #fff;
+  border: 1px solid #9a9a9d;
+  color: var(--accent);
+}
+
+.menu-btn:hover {
+  opacity: 0.85;
+}

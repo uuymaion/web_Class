@@ -1,0 +1,46 @@
+/* 查詢頁專用樣式(共用的 .card、.field、.primary-btn、.bottom-bar 在 styles.css) */
+
+.search-block {
+  margin-bottom: 36px;
+}
+
+.search-title {
+  margin: 8px 0 14px;
+  text-align: center;
+  font-size: 22px;
+  font-weight: 700;
+  color: #000;
+}
+
+.search-form {
+  padding: 20px 20px 18px;
+}
+
+.search-form .field {
+  margin-bottom: 14px;
+}
+
+.search-form .field label {
+  margin-bottom: 6px;
+  font-size: 15px;
+  font-weight: 500;
+}
+
+/* 灰色的「查詢」按鈕 */
+.search-btn {
+  display: block;
+  width: 120px;
+  height: 34px;
+  margin: 18px auto 0;
+  border: none;
+  border-radius: 6px;
+  background: #58595c;
+  color: #fff;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+
+.search-btn:hover {
+  background: #3f4043;
+}
