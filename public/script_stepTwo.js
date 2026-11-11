@@ -140,6 +140,12 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     try {
+      const res = await fetch("/api/applications", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(fullData)
+      });
+
       if (!res.ok) {
         alert("送出失敗，請稍後再試");
         return;

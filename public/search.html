@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>查詢 - 北市大臨時停車系統</title>
+<link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="styles_search.css">
+</head>
+<body>
+  <section class="screen" id="search">
+    <div class="page">
+
+      <!-- 登記人查詢 -->
+      <section class="search-block">
+        <h2 class="search-title">我是登記人</h2>
+        <form class="card search-form" data-role="applicant" novalidate>
+          <div class="field">
+            <label for="applicantName">登記人姓名</label>
+            <input type="text" id="applicantName" autocomplete="name">
+          </div>
+          <div class="field">
+            <label for="applicantPhone">登記人手機號碼</label>
+            <input type="tel" id="applicantPhone" inputmode="numeric" autocomplete="tel">
+          </div>
+          <button type="submit" class="search-btn">查詢</button>
+        </form>
+      </section>
+
+      <!-- 駕駛人查詢 -->
+      <section class="search-block">
+        <h2 class="search-title">我是駕駛人</h2>
+        <form class="card search-form" data-role="driver" novalidate>
+          <div class="field">
+            <label for="driverName">駕駛人姓名</label>
+            <input type="text" id="driverName" autocomplete="name">
+          </div>
+          <div class="field">
+            <label for="driverPhone">駕駛人手機號碼</label>
+            <input type="tel" id="driverPhone" inputmode="numeric" autocomplete="tel">
+          </div>
+          <button type="submit" class="search-btn">查詢</button>
+        </form>
+      </section>
+
+      <div class="bottom-bar">
+        <button type="button" class="primary-btn" id="homeBtn">返回首頁</button>
+      </div>
+    </div>
+  </section>
+
+  <script src="debug.js"></script>
+  <script src="script_search.js"></script>
+</body>
+</html>
