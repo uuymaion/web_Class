@@ -132,12 +132,6 @@ document.addEventListener("DOMContentLoaded", () => {
     // 修改：改用 collectVehicleData()，才不會漏掉多台車的資料
     const vehicles = collectVehicleData();
     const fullData = { ...step1Data, vehicles, debug: DEBUG};
-    // 送給後端存進 data.json
-    const res = await fetch("/api/applications", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(fullData)
-    });
     if(!DEBUG){
       try {
         const res = await fetch("/api/applications", {
