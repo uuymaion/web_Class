@@ -1,9 +1,9 @@
 :root {
   --bg: #D5D9D2;
   --card-bg: #ffffff;
-  --text-primary: #2b2b2e;
-  --text-secondary: #6e6e72;
-  --input-border: #d9d9dc;
+  --text-primary: #222222;
+  --text-secondary: #55565a;
+  --input-border: #c9c9c9;
   --input-bg: #ffffff;
   --accent: #1F5F4A;
   --radius-card: 18px;
@@ -55,7 +55,7 @@ body {
   align-items: center;
   background: none;
   border: none;
-  color: #f3f3f4;
+  color: var(--text-secondary);
   font-size: 15px;
   font-weight: 600;
   cursor: pointer;
@@ -107,7 +107,7 @@ button {
 .vehicle-group + .vehicle-group {
   margin-top: 24px;
   padding-top: 20px;
-  border-top: 1px solid #ececec;
+  border-top: 1px solid #e5e5e5;
 }
 
 .field {
@@ -151,7 +151,7 @@ button {
 }
 
 .field input::placeholder {
-  color: #b7b7ba;
+  color: #aaaaaa;
 }
 
 .field input:focus {
@@ -184,7 +184,7 @@ button {
 .checkbox-option .box {
   width: 16px;
   height: 16px;
-  border: 1.5px solid #b7b7ba;
+  border: 1.5px solid #aaaaaa;
   border-radius: 3px;
   display: inline-block;
   position: relative;
