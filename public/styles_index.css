@@ -45,20 +45,6 @@
   right: 14px;
 }
 
-/* 查詢：深綠底白字 */
-.menu-btn-filled {
-  background: var(--accent);
-  border: 1px solid var(--accent);
-  color: #fff;
-}
-
-/* 登記：白底綠字 */
-.menu-btn-outline {
-  background: #fff;
-  border: 1px solid #9a9a9d;
-  color: var(--accent);
-}
-
 .menu-btn:hover {
   opacity: 0.85;
 }

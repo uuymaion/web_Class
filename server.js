@@ -61,6 +61,7 @@ app.post("/api/applications", (req, res) => {
     id: Date.now(),
     createdAt: new Date().toISOString(),
     status: DEFAULT_STATUS,
+    debug: b.debug === true,
     unit: str(b.unit),
     eventName: str(b.eventName),
     startDate: str(b.startDate),
