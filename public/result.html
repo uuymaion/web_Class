@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>查詢結果 - 北市大臨時停車系統</title>
+<link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="styles_result.css">
+</head>
+<body>
+  <section class="screen" id="result">
+    <div class="page">
+      <button type="button" class="result-back" id="topBackBtn">← 回到首頁</button>
+      <h1 class="result-title" id="resultTitle">登記資料</h1>
+
+      <!-- 查詢結果由 script_result.js 產生 -->
+      <div id="resultList" aria-live="polite"></div>
+
+      <div class="bottom-bar">
+        <button type="button" class="primary-btn" id="homeBtn">返回首頁</button>
+      </div>
+    </div>
+  </section>
+
+  <script src="debug.js"></script>
+  <script src="script_result.js"></script>
+</body>
+</html>

@@ -131,24 +131,32 @@ document.addEventListener("DOMContentLoaded", () => {
     const step1Data = JSON.parse(sessionStorage.getItem("step1Data") || "{}");
     // 修改：改用 collectVehicleData()，才不會漏掉多台車的資料
     const vehicles = collectVehicleData();
-    const fullData = { ...step1Data, vehicles };
+    const fullData = { ...step1Data, vehicles, debug: DEBUG};
     // 送給後端存進 data.json
     const res = await fetch("/api/applications", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(fullData)
     });
+    if(!DEBUG){
+      try {
+        const res = await fetch("/api/applications", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(fullData)
+        });
 
-    try {
       if (!res.ok) {
         alert("送出失敗，請稍後再試");
+          return;
+        }                      // ← 這個 } 關閉 if
+      } catch (err) {          // ← 這個 } 關閉 try，然後接 catch
+        console.error(err);
+        alert("無法連線到伺服器，請確認後端有啟動");
         return;
-      }                      // ← 這個 } 關閉 if
-    } catch (err) {          // ← 這個 } 關閉 try，然後接 catch
-      console.error(err);
-      alert("無法連線到伺服器，請確認後端有啟動");
-      return;
-    }                        // ← 這個 } 關閉 catch
+      }                        // ← 這個 } 關閉 catch
+    }
+    
 
     alert("申請已送出");
 
