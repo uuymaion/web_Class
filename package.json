@@ -1,0 +1,25 @@
+{
+  "name": "web_class",
+  "version": "1.0.0",
+  "description": "1. index.html 申請-個人資料頁面 2. stepTwo.html 申請-車輛頁面 3. script.js 連結index.html的JS 4. script_stepTwo.js 連結stepTwo.hteml的JS 5. styles.css 共用css",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/uuymaion/web_Class.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/uuymaion/web_Class/issues"
+  },
+  "homepage": "https://github.com/uuymaion/web_Class#readme",
+  "dependencies": {
+    "express": "^5.3.0"
+  }
+}
