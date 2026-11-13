@@ -3,6 +3,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // DOMContentLoaded 簡單說就是html建立完成的時候，這個條件就是上述的「某件事」
   
   const step1Form = document.getElementById("step1Form");
+  const startDate = step1Form.elements["startDate"];
   const endDate = step1Form.elements["endDate"];
   const savedData = sessionStorage.getItem("step1Data");
 
@@ -32,6 +33,28 @@ document.addEventListener("DOMContentLoaded", () => {
     endDate.min = startDate.value;
     if (endDate.value && endDate.value < startDate.value) endDate.value = "";
   });
+
+    // 如果使用者從第二頁跳回來的話需要把資料存回網頁
+  if(savedData) {
+    const data = JSON.parse(savedData); // JSON.parse() 是把字串轉回物件
+
+    Object.keys(data).forEach((key) => {
+      const field = step1Form.elements[key];
+      if (!field) return;
+
+      // 先處理有選項的部分
+      if (field instanceof RadioNodeList || field.type === "checkbox" || field.type === "radio") {
+        const options = field instanceof RadioNodeList ? Array.from(field) : [field];
+        options.forEach((option) => {
+          option.checked = option.value === data[key];
+        });
+
+      // 剩下都是文字，可以直接貼上
+      } else {
+        field.value = data[key];
+      }
+    });
+  }
 
   // 第一步 -> 第二步
   step1Form.addEventListener("submit", (e) => {
