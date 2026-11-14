@@ -114,7 +114,7 @@ button {
   margin-bottom: 22px;
 }
 
-.field.last {
+.field.last { /*最後一個格子要貼地*/
   margin-bottom: 0;
 }
 
