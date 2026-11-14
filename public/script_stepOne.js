@@ -7,9 +7,9 @@ document.addEventListener("DOMContentLoaded", () => {
   const endDate = step1Form.elements["endDate"];
   const savedData = sessionStorage.getItem("step1Data");
 
-  const ADVANCE_DAYS = 3; // 要在活動開始「幾天前」提出申請，想改天數只要改這裡
+  const ADVANCE_DAYS = 2; // 要在活動開始「幾天前」提出申請，想改天數只要改這裡
 
-  // 把 Date 轉成 "YYYY-MM-DD"
+  // 日期欄位需要用"YYYY-MM-DD"的格式
   // 用本地時間來算；toISOString() 是用 UTC，台灣早上 8 點前會變成「昨天」
   const toDateStr = (d) => {
     const y = d.getFullYear();
@@ -18,18 +18,14 @@ document.addEventListener("DOMContentLoaded", () => {
     return `${y}-${m}-${day}`;
   };
 
-  // 最早可以選的活動開始日 = 今天 + ADVANCE_DAYS 天
-  const earliest = new Date();
-  earliest.setDate(earliest.getDate() + ADVANCE_DAYS);
+  const earliest = new Date(); // 取得現在時間
+  earliest.setDate(earliest.getDate() + ADVANCE_DAYS); 
+  // setDate和getDate剛好相反，就是把日期跟數字互換(15 <-> 15號)
   const earliestStart = toDateStr(earliest);
+  startDate.min = earliestStart;
 
-  // 日期限制(DEBUG 模式不限制，方便測試)
-  if (!DEBUG) {
-    startDate.min = earliestStart;
-  }
   // 選了開始日期之後，結束日期的最小值跟著變；如果原本選的結束日期變得比開始日期早，就清掉讓使用者重選
   startDate.addEventListener("change", () => {
-    if (DEBUG) return;
     endDate.min = startDate.value;
     if (endDate.value && endDate.value < startDate.value) endDate.value = "";
   });
