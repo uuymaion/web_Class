@@ -1,0 +1,46 @@
+/* 後台登入頁：只放這一頁需要的樣式，共用樣式在 styles.css */
+
+/* 共用 CSS 的 input 規則沒有包含 password，這裡補上 */
+.field input[type="password"] {
+  width: 100%;
+  height: 40px;
+  padding: 0 12px;
+  border: 1px solid var(--input-border);
+  border-radius: var(--radius-input);
+  background: var(--input-bg);
+  font-size: 14px;
+  color: var(--text-primary);
+  outline-offset: 2px;
+}
+
+/* 沒有底部固定列，所以把 .page 預留的底部空間縮小，並讓卡片靠上偏中間 */
+.login-page {
+  padding-top: 15vh;
+  padding-bottom: 48px;
+}
+
+/* 錯誤訊息 */
+.login-error {
+  margin: 12px 0 0;
+  font-size: 13px;
+  line-height: 1.5;
+  color: #c0392b;
+}
+
+.login-error[hidden] {
+  display: none;
+}
+
+.login-btn {
+  margin-top: 20px;
+}
+
+/* 登入中（按鈕被停用）：不要套用共用的 hover 變色，只是變淡 */
+.login-btn:disabled,
+.login-btn:disabled:hover {
+  background: var(--accent);
+  color: var(--input-bg);
+  border: none;
+  opacity: 0.5;
+  cursor: not-allowed;
+}
