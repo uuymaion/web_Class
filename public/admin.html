@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>後台｜申請列表</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="styles_admin.css">
+</head>
+<body>
+  <header class="admin-bar">
+    <div class="admin-bar-inner">
+      <div class="admin-brand">北市大臨時停車系統 · 後台</div>
+      <div class="admin-bar-right">
+        <span>管理員</span>
+        <button type="button" class="logout-btn" id="logoutBtn">登出</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="admin-main">
+    <div class="admin-title-row">
+      <h1 class="admin-title">申請列表</h1>
+      <span class="admin-summary" id="summary"></span>
+    </div>
+
+    <div class="admin-controls">
+      <div class="tabs" id="tabs"></div>
+      <input
+        type="search"
+        id="searchInput"
+        class="search-input"
+        placeholder="搜尋登記人、單位、活動名稱"
+        aria-label="搜尋登記人、單位或活動名稱"
+      >
+    </div>
+
+    <p class="admin-error" id="errorMsg" role="alert" hidden></p>
+
+    <div class="table-card">
+      <div class="table-scroll">
+        <div class="table">
+          <div class="row row-head">
+            <div>登記人</div>
+            <div>活動 / 單位</div>
+            <div>活動日期</div>
+            <div>停車場</div>
+            <div>車數</div>
+            <div>狀態</div>
+          </div>
+          <div id="rows"></div>
+        </div>
+      </div>
+      <p class="empty-msg" id="emptyMsg" hidden>沒有符合條件的申請</p>
+    </div>
+  </main>
+
+  <script src="script_admin.js"></script>
+</body>
+</html>

@@ -241,5 +241,43 @@ app.get("/api/admin/check", requireAdmin, (req, res) => {
   res.json({ ok: true });
 });
 
+// ---------- 後台：申請列表 ----------
+
+// 把 Date 轉成 "YYYY-MM-DD"(用本地時間算)
+const toDateStr = (d) => {
+  const y = d.getFullYear();
+  const m = String(d.getMonth() + 1).padStart(2, "0");
+  const day = String(d.getDate()).padStart(2, "0");
+  return `${y}-${m}-${day}`;
+};
+
+// 顯示用的狀態：結束日期已過、而且是「審查中」或「申請通過」的，顯示成「已過期」
+// 只影響回傳的內容，不會改動 data.json 裡存的資料
+const displayStatus = (a, today) => {
+  const status = a.status || DEFAULT_STATUS;
+  const open = status === "審查中" || status === "申請通過";
+  return open && a.endDate && a.endDate < today ? "已過期" : status;
+};
+
+// 列出全部申請(需要登入)；只回傳列表要用的欄位，不含電話和 email
+app.get("/api/admin/applications", requireAdmin, (req, res) => {
+  const today = toDateStr(new Date());
+  const applications = load()
+    .map((a) => ({
+      id: a.id,
+      applicantName: a.applicantName,
+      unit: a.unit,
+      eventName: a.eventName,
+      startDate: a.startDate,
+      endDate: a.endDate,
+      area: a.area,
+      vehicleCount: (a.vehicles || []).length,
+      status: displayStatus(a, today),
+      debug: a.debug === true,
+    }))
+    .sort((x, y) => y.id - x.id); // 新的排前面
+  res.json({ ok: true, applications });
+});
+
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log(`http://localhost:${PORT}`));
