@@ -117,26 +117,37 @@
   height: 32px;
   padding: 0 4px;
   border-radius: 6px;
+  border: none;
   background: #fff;
   font-size: 13px;
   white-space: nowrap;
   cursor: pointer;
+  transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease, color 0.15s ease;
+}
+.action-btn:hover:not(:disabled) { /*不能點擊的時候不會觸發*/
+  transform: translateY(-2px);
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.25);
+  filter: brightness(0.88);
+}
+
+.action-btn:active:not(:disabled) {
+  transform: translateY(0);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
 .action-edit {
   flex: 1.5;
-  border: 1px solid var(--accent);
-  color: var(--accent);
+  background-color: var(--accent);
+  color: var(--input-bg);
 }
-
 .action-resend {
-  border: 1px solid #8a8a8e;
-  color: #58595c;
+  background: #7d8a84;
+  color: var(--input-bg);
 }
 
 .action-cancel {
-  border: 1px solid #d93025;
-  color: #d93025;
+  background: #d9534f;
+  color: var(--input-bg);
 }
 
 .action-btn:disabled {
