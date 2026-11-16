@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>後台登入｜北市大臨時停車系統</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="styles_adminLogin.css">
+</head>
+<body>
+  <div class="screen">
+    <main class="page login-page">
+      <h1 class="page-title">後台登入</h1>
+
+      <form id="loginForm" class="card" novalidate>
+        <div class="field last">
+          <label for="adminPassword">管理員密碼</label>
+          <p class="hint">僅限管理人員使用</p>
+          <input
+            type="password"
+            id="adminPassword"
+            name="password"
+            placeholder="請輸入密碼"
+            autocomplete="current-password"
+          >
+        </div>
+
+        <p class="login-error" id="loginError" role="alert" hidden></p>
+
+        <button type="submit" class="primary-btn login-btn" id="loginBtn">登入</button>
+      </form>
+    </main>
+  </div>
+
+  <script src="script_adminLogin.js"></script>
+</body>
+</html>

@@ -1,0 +1,215 @@
+/* 後台申請列表（電腦版）：共用的顏色變數、字體在 styles.css */
+/* 版面用 flex / grid 加 max-width，沒有寫死寬度，之後做手機版時只要加 @media 規則 */
+
+/* ---------- 頂端列 ---------- */
+.admin-bar {
+  background: var(--accent);
+  color: #ffffff;
+}
+
+.admin-bar-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 32px;
+  min-height: 64px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px 24px;
+}
+
+.admin-brand {
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.admin-bar-right {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  font-size: 14px;
+}
+
+.logout-btn {
+  min-height: 44px;
+  padding: 0 4px;
+  border: none;
+  box-shadow: none;
+  background: none;
+  color: #ffffff;
+  font-size: 14px;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+/* ---------- 主要內容 ---------- */
+.admin-main {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 28px 32px 48px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.admin-title-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 8px 16px;
+}
+
+.admin-title {
+  margin: 0;
+  font-size: 24px;
+  font-weight: 700;
+}
+
+.admin-summary {
+  font-size: 14px;
+  color: var(--text-secondary);
+}
+
+.admin-controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px 24px;
+}
+
+/* 狀態分頁 */
+.tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.tab {
+  min-height: 44px;
+  padding: 0 16px;
+  border: 1px solid #b7c2bc;
+  border-radius: var(--radius-input);
+  box-shadow: none;
+  background: var(--input-bg);
+  color: var(--text-primary);
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.tab.active {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #ffffff;
+  font-weight: 700;
+}
+
+/* 搜尋框 */
+.search-input {
+  width: 280px;
+  max-width: 100%;
+  min-height: 44px;
+  padding: 0 14px;
+  border: 1px solid #b7c2bc;
+  border-radius: var(--radius-input);
+  background: var(--input-bg);
+  font-size: 14px;
+  color: var(--text-primary);
+}
+
+.search-input:focus {
+  border-color: var(--accent);
+  outline-offset: 2px;
+}
+
+.admin-error {
+  margin: 0;
+  font-size: 14px;
+  color: #c0392b;
+}
+
+.admin-error[hidden],
+.empty-msg[hidden] {
+  display: none;
+}
+
+/* ---------- 表格 ---------- */
+.table-card {
+  background: var(--card-bg);
+  border-radius: 12px;
+  box-shadow: var(--shadow);
+  overflow: hidden;
+}
+
+/* 表格太寬時，在卡片裡橫向捲動 */
+.table-scroll {
+  overflow-x: auto;
+}
+
+.table {
+  min-width: 880px;
+  --cols: 120px minmax(0, 1.5fr) minmax(0, 1.3fr) minmax(0, 1fr) 64px 110px;
+}
+
+.row {
+  display: grid;
+  grid-template-columns: var(--cols);
+  column-gap: 16px;
+  align-items: center;
+  padding: 14px 24px;
+  border-bottom: 1px solid #eef0eb;
+  font-size: 14px;
+}
+
+.row-head {
+  border-bottom: 1px solid #dde3df;
+  color: var(--text-secondary);
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.cell-name {
+  font-weight: 700;
+}
+
+.cell-event {
+  font-weight: 500;
+}
+
+.cell-sub {
+  color: var(--text-secondary);
+  font-size: 13px;
+}
+
+.test-tag {
+  margin-left: 6px;
+  padding: 0 6px;
+  border: 1px solid #b7c2bc;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 400;
+  color: var(--text-secondary);
+}
+
+.empty-msg {
+  margin: 0;
+  padding: 48px 24px;
+  text-align: center;
+  color: var(--text-secondary);
+}
+
+/* ---------- 狀態標籤 ---------- */
+.pill {
+  display: inline-block;
+  padding: 4px 12px;
+  border: 1px solid transparent;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.status-pending   { background: #fbeae7; color: #a93226; }
+.status-approved  { background: #e1efe7; color: #1f5a3c; }
+.status-cancelled { background: #eceef0; color: #4b5563; }
+.status-expired   { background: #ffffff; color: #4b5563; border-color: #8b968f; }
