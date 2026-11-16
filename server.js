@@ -2,6 +2,13 @@ const express = require("express"); // 呼叫套件express，負責接收、回�
 const fs = require("fs"); // 呼叫套件fs，負責讀寫data.json
 const path = require("path");
 
+const crypto = require("crypto"); // 產生登入憑證、比對密碼用
+
+// 讀取 .env 裡的設定(密碼放這裡，不要寫在程式碼裡)；沒有這個檔案就略過
+try {
+  process.loadEnvFile(path.join(__dirname, ".env"));
+} catch (err) {}
+
 const app = express(); // 建立server並存在變數app裡
 app.use(express.json()); // 自動把fetch送來的JSON字串轉成物件(放在req.body)
 app.use(express.static(path.join(__dirname, "public"))); // 把public公開成網頁，網址 / 會自動開 index.html
@@ -161,6 +168,77 @@ app.post("/api/applications/:id/resend", (req, res) => {
   // TODO: 在這裡寄信給 hit.application.applicantEmail
   console.log(`[寄信 stub] 重發申請 ${hit.application.id} 的通知 -> ${hit.application.applicantEmail}`);
   res.json({ ok: true, sent: false });
+});
+
+// ---------- 後台登入 ----------
+
+const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || "";
+const TOKEN_TTL_MS = 8 * 60 * 60 * 1000; // 登入後憑證有效 8 小時
+const MAX_FAILS = 5;                     // 連續輸錯幾次就先鎖住
+const LOCK_MS = 10 * 60 * 1000;          // 鎖住多久
+
+if (!ADMIN_PASSWORD) {
+  console.warn("尚未設定 ADMIN_PASSWORD(請建立 .env)，後台登入功能停用");
+}
+
+const sessions = new Map(); // 憑證 -> 到期時間(毫秒)；server 重開後要重新登入
+const fails = new Map();    // IP -> { count, lockedUntil }
+
+// 兩邊都先轉成雜湊再比，長度固定，也不會被用回應時間猜密碼
+const sha = (s) => crypto.createHash("sha256").update(String(s)).digest();
+const passwordOk = (input) => crypto.timingSafeEqual(sha(input), sha(ADMIN_PASSWORD));
+
+// 後台 API 的守門員：沒帶有效憑證就回 401，擋在最前面
+const requireAdmin = (req, res, next) => {
+  const header = req.get("Authorization") || "";
+  const token = header.startsWith("Bearer ") ? header.slice(7) : "";
+  const expires = sessions.get(token);
+  if (!expires || expires < Date.now()) {
+    sessions.delete(token);
+    return res.status(401).json({ ok: false, message: "請先登入" });
+  }
+  req.adminToken = token;
+  next();
+};
+
+// 登入：密碼對就發一組憑證
+app.post("/api/admin/login", (req, res) => {
+  if (!ADMIN_PASSWORD) {
+    return res.status(503).json({ ok: false, message: "後台尚未啟用" });
+  }
+
+  const record = fails.get(req.ip) || { count: 0, lockedUntil: 0 };
+  if (record.lockedUntil > Date.now()) {
+    return res.status(429).json({ ok: false, message: "嘗試次數過多，請稍後再試" });
+  }
+
+  const password = String(req.body?.password ?? "");
+  if (!passwordOk(password)) {
+    record.count += 1;
+    if (record.count >= MAX_FAILS) {
+      record.count = 0;
+      record.lockedUntil = Date.now() + LOCK_MS;
+    }
+    fails.set(req.ip, record);
+    return res.status(401).json({ ok: false, message: "密碼錯誤" });
+  }
+
+  fails.delete(req.ip);
+  for (const [t, exp] of sessions) if (exp < Date.now()) sessions.delete(t); // 順便清掉過期的
+  const token = crypto.randomBytes(32).toString("hex");
+  sessions.set(token, Date.now() + TOKEN_TTL_MS);
+  res.json({ ok: true, token });
+});
+
+// 登出：讓這組憑證失效
+app.post("/api/admin/logout", requireAdmin, (req, res) => {
+  sessions.delete(req.adminToken);
+  res.json({ ok: true });
+});
+
+// 檢查憑證是否有效(之後後台頁面載入時用來判斷要不要跳回登入頁，現在也用來測試)
+app.get("/api/admin/check", requireAdmin, (req, res) => {
+  res.json({ ok: true });
 });
 
 const PORT = process.env.PORT || 3000;
