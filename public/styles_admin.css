@@ -148,8 +148,8 @@
 }
 
 .table {
-  min-width: 880px;
-  --cols: 120px minmax(0, 1.5fr) minmax(0, 1.3fr) minmax(0, 1fr) 64px 110px;
+  min-width: 1040px;
+  --cols: 120px minmax(0, 1.5fr) minmax(0, 1.3fr) minmax(0, 1fr) 64px 110px 140px;
 }
 
 .row {
@@ -213,3 +213,112 @@
 .status-approved  { background: #e1efe7; color: #1f5a3c; }
 .status-cancelled { background: #eceef0; color: #4b5563; }
 .status-expired   { background: #ffffff; color: #4b5563; border-color: #8b968f; }
+.status-rejected  { background: #ffffff; color: #a93226; border-color: #a93226; }
+
+/* 退回理由：顯示在狀態標籤下方 */
+.pill + .cell-sub {
+  margin-top: 4px;
+  overflow-wrap: anywhere; /* 很長又沒空格的字也會換行 */
+}
+
+/* ---------- 審核按鈕 ---------- */
+.cell-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.action-btn {
+  min-height: 36px;
+  padding: 0 14px;
+  border: 1px solid #b7c2bc;
+  border-radius: var(--radius-input);
+  box-shadow: none; /* 蓋掉 styles.css 給所有 button 的陰影 */
+  background: var(--input-bg);
+  color: var(--text-primary);
+  font-family: inherit;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.action-btn:hover {
+  opacity: 0.85;
+}
+
+.action-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.action-btn.approve {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #ffffff;
+  font-weight: 700;
+}
+
+.action-btn.reject {
+  border-color: #c0392b;
+  color: #c0392b;
+}
+
+/* ---------- 退回理由對話框 ---------- */
+.reject-dialog {
+  width: min(440px, 90vw);
+  padding: 24px;
+  border: none;
+  border-radius: 12px;
+  box-shadow: var(--shadow);
+  background: var(--card-bg);
+  color: var(--text-primary);
+}
+
+.reject-dialog::backdrop {
+  background: rgba(0, 0, 0, 0.4);
+}
+
+.reject-title {
+  margin: 0 0 6px;
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.reject-target {
+  margin: 0 0 16px;
+  font-size: 14px;
+  color: var(--text-secondary);
+}
+
+.reject-label {
+  display: block;
+  margin-bottom: 8px;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.reject-dialog textarea {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid #b7c2bc;
+  border-radius: var(--radius-input);
+  background: var(--input-bg);
+  font-family: inherit;
+  font-size: 14px;
+  color: var(--text-primary);
+  resize: vertical;
+}
+
+.reject-dialog textarea:focus {
+  border-color: var(--accent);
+  outline-offset: 2px;
+}
+
+.reject-dialog .admin-error {
+  margin-top: 8px;
+}
+
+.reject-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-top: 16px;
+}
