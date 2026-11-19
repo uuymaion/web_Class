@@ -280,6 +280,16 @@ app.get("/api/admin/applications", requireAdmin, (req, res) => {
   res.json({ ok: true, applications });
 });
 
+// 單筆申請的完整資料(需要登入)；列表展開時才抓，含電話、email、每台車
+app.get("/api/admin/applications/:id", requireAdmin, (req, res) => {
+  const a = load().find((x) => String(x.id) === req.params.id);
+  if (!a) return res.status(404).json({ ok: false, message: "找不到這筆申請" });
+  res.json({
+    ok: true,
+    application: { ...a, status: displayStatus(a, toDateStr(new Date())) },
+  });
+});
+
 // ---------- 後台：審核(通過 / 退回) ----------
 
 const REVIEW_ACTIONS = {
