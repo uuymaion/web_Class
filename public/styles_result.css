@@ -104,6 +104,7 @@
   font-weight: 600;
 }
 .reject-reason {
+  color: #b45309;
   line-height: 1.5;
   overflow-wrap: anywhere;
 }
