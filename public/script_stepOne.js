@@ -1,9 +1,11 @@
-// 從第 2 頁按「上一步」回來：在 <html> 加上 from-step2，CSS 就會播倒退動畫
+// 依照從哪裡進來，在 <html> 加上對應的 class，CSS 就會播對應的動畫
+//   從首頁按「登記」進來 -> from-index(前進動畫)
+//   從第 2 頁按「上一步」回來 -> from-step2(倒退動畫)
 // 放在最外面(不等 DOMContentLoaded)，讓畫面第一次出現前就加好，避免閃一下
-if (sessionStorage.getItem("stepDirection") === "back") {
-  document.documentElement.classList.add("from-step2");
-  sessionStorage.removeItem("stepDirection"); // 只播這一次，重新整理就不會再播
-}
+const stepDirection = sessionStorage.getItem("stepDirection");
+if (stepDirection === "forward") document.documentElement.classList.add("from-index");
+if (stepDirection === "back") document.documentElement.classList.add("from-step2");
+sessionStorage.removeItem("stepDirection"); // 只播這一次，重新整理就不會再播
 
 document.addEventListener("DOMContentLoaded", () => { 
   // addEventListener 可以理解成監聽器「當某件事發生時，幫我執行某個函式」

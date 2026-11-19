@@ -31,3 +31,39 @@
   from { opacity: 0; transform: translateX(-24px); }
   to   { opacity: 1; transform: translateX(0); }
 }
+
+
+/* ---------- 從首頁按「登記」進來的動畫 ---------- */
+/* 只有 <html> 有 from-index 這個 class 時才會播(由 script_stepOne.js 加上) */
+
+/* 第 1 段進度條：先變回白色，再從左往右填滿 */
+.from-index .step-bar:nth-child(1) {
+  position: relative;
+  overflow: hidden;
+  background: var(--input-bg);
+}
+
+.from-index .step-bar:nth-child(1)::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: var(--accent);
+  transform-origin: left;
+  animation: bar-fill 0.5s ease-out 0.15s both;
+}
+
+@keyframes bar-fill {
+  from { transform: scaleX(0); }
+  to   { transform: scaleX(1); }
+}
+
+/* 表單卡片：從右邊滑進來 */
+.from-index #step1Form .card {
+  animation: slide-in 0.35s ease-out both;
+}
+
+@keyframes slide-in {
+  from { opacity: 0; transform: translateX(24px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
