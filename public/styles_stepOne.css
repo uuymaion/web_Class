@@ -1,0 +1,33 @@
+/* ---------- 從第 2 頁按「上一步」回來的動畫 ---------- */
+/* 只有 <html> 有 from-step2 這個 class 時才會播(由 script_stepOne.js 加上) */
+
+/* 第 2 段進度條：從滿的綠色往左縮回去 */
+.from-step2 .step-bar:nth-child(2) {
+  position: relative;
+  overflow: hidden;
+}
+
+.from-step2 .step-bar:nth-child(2)::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: var(--accent);
+  transform-origin: left;
+  animation: bar-empty 0.5s ease-in 0.15s both;
+}
+
+@keyframes bar-empty {
+  from { transform: scaleX(1); }
+  to   { transform: scaleX(0); }
+}
+
+/* 表單卡片：從左邊滑進來(跟前進時的方向相反) */
+.from-step2 #step1Form .card {
+  animation: slide-in-left 0.35s ease-out both;
+}
+
+@keyframes slide-in-left {
+  from { opacity: 0; transform: translateX(-24px); }
+  to   { opacity: 1; transform: translateX(0); }
+}

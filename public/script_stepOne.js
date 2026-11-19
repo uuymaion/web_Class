@@ -1,3 +1,10 @@
+// 從第 2 頁按「上一步」回來：在 <html> 加上 from-step2，CSS 就會播倒退動畫
+// 放在最外面(不等 DOMContentLoaded)，讓畫面第一次出現前就加好，避免閃一下
+if (sessionStorage.getItem("stepDirection") === "back") {
+  document.documentElement.classList.add("from-step2");
+  sessionStorage.removeItem("stepDirection"); // 只播這一次，重新整理就不會再播
+}
+
 document.addEventListener("DOMContentLoaded", () => { 
   // addEventListener 可以理解成監聽器「當某件事發生時，幫我執行某個函式」
   // DOMContentLoaded 簡單說就是html建立完成的時候，這個條件就是上述的「某件事」
