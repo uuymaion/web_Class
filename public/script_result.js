@@ -220,7 +220,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const goHome = () => (window.location.href = "index.html");
   document.getElementById("homeBtn").addEventListener("click", goHome);
-  document.getElementById("topBackBtn").addEventListener("click", goHome);
 
   loadResults();
 });
