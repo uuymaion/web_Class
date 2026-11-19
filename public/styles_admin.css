@@ -354,20 +354,45 @@
   font-size: 14px;
 }
 
-.detail-info {
+/* 三張聯絡資料小卡片 */
+.detail-groups {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-  gap: 12px 24px;
-  margin-bottom: 16px;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+  max-width: 960px;
+  margin-bottom: 20px;
 }
 
-.detail-label {
-  margin-bottom: 2px;
-  font-size: 12px;
+.detail-group {
+  padding: 14px 16px;
+  border-radius: 8px;
+  background: var(--card-bg);
+}
+
+.detail-group-title {
+  margin: 0 0 10px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid #eef0eb;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--accent);
+}
+
+/* 每一列：左邊標題固定寬度、右邊內容，上下對齊 */
+.detail-list {
+  display: grid;
+  grid-template-columns: 64px minmax(0, 1fr);
+  gap: 6px 12px;
+  margin: 0;
+}
+
+.detail-list dt {
+  font-size: 13px;
   color: var(--text-secondary);
 }
 
-.detail-value {
+.detail-list dd {
+  margin: 0;
   overflow-wrap: anywhere;
 }
 

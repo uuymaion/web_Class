@@ -235,23 +235,37 @@ document.addEventListener("DOMContentLoaded", () => {
   function fillDetail(box, d) {
     box.replaceChildren();
 
-    // 聯絡資料
-    const info = el("div", "detail-info");
-    const items = [
-      ["登記人電話", d.applicantPhone],
-      ["登記人 Email", d.applicantEmail],
-      ["主管", d.supervisorName],
-      ["主管 Email", d.supervisorEmail],
-      ["申請時間", formatTime(d.createdAt)],
+    // 聯絡資料：分成三張小卡片，每張是「標題 + 一列一列的欄位」
+    const groups = [
+      ["登記人", [
+        ["姓名", d.applicantName],
+        ["單位", d.unit],
+        ["電話", d.applicantPhone],
+        ["Email", d.applicantEmail],
+      ]],
+      ["單位主管", [
+        ["姓名", d.supervisorName],
+        ["Email", d.supervisorEmail],
+      ]],
+      ["審核紀錄", [
+        ["申請時間", formatTime(d.createdAt)],
+        ["審核時間", d.reviewedAt ? formatTime(d.reviewedAt) : "尚未審核"],
+        ...(d.rejectReason ? [["退回理由", d.rejectReason]] : []),
+      ]],
     ];
-    if (d.reviewedAt) items.push(["審核時間", formatTime(d.reviewedAt)]);
-    if (d.rejectReason) items.push(["退回理由", d.rejectReason]);
 
-    items.forEach(([label, value]) => {
-      const item = el("div", "detail-item");
-      item.append(el("div", "detail-label", label), el("div", "detail-value", value || "—"));
-      info.appendChild(item);
+    const info = el("div", "detail-groups");
+    groups.forEach(([title, fields]) => {
+      const card = el("section", "detail-group");
+      card.appendChild(el("h3", "detail-group-title", title));
+      const list = el("dl", "detail-list");
+      fields.forEach(([label, value]) => {
+        list.append(el("dt", "", label), el("dd", "", value || "—"));
+      });
+      card.appendChild(list);
+      info.appendChild(card);
     });
+    box.appendChild(info);
     box.appendChild(info);
 
     // 車輛清單
