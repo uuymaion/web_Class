@@ -26,7 +26,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const dateRange = (a) => `${fmtDate(a.startDate)}~${fmtDate(a.endDate)}`;
 
   const statusHtml = (status) => {
-    const cls = { 申請通過: "status-ok", 審查中: "status-pending", 已取消: "status-cancel" }[status] || "";
+    const cls = { 申請通過: "status-ok", 審查中: "status-pending", 已取消: "status-cancel", 已退回: "status-rejected" }[status] || "";
     return `<span class="${cls}">${esc(status)}</span>`;
   };
 
@@ -57,7 +57,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // 登記人看到的卡片(三張：主卡片、更多申請資料、車輛)
   function applicantGroup(a) {
     const status = a.status || "審查中";
-    const cancelled = status === "已取消";
+    const closed = status === "已取消" || status === "已退回";
     const vehicles = a.vehicles || [];
 
     const infoRows = [
@@ -83,11 +83,13 @@ document.addEventListener("DOMContentLoaded", () => {
           ${row("登記車數", vehicles.length, pill("toggle-vehicles", "點擊查看"))}
           ${row("活動日期", dateRange(a))}
           ${row("申請狀態", statusHtml(status))}
+          ${status === "已退回" && a.rejectReason ? row("退回理由", `<span class="reject-reason">${esc(a.rejectReason)}</span>`) : ""}
           <p class="card-note">*原本的資料不會自動刪除</p>
           <div class="action-row">
             <button type="button" class="action-btn action-edit" data-action="edit">編輯並重新送審</button>
-            <button type="button" class="action-btn action-resend" data-action="resend" ${cancelled ? "disabled" : ""}>重發郵件</button>
-            <button type="button" class="action-btn action-cancel" data-action="cancel" ${cancelled ? "disabled" : ""}>取消</button>
+            ${closed ? "" : `
+            <button type="button" class="action-btn action-resend" data-action="resend">重發郵件</button>
+            <button type="button" class="action-btn action-cancel" data-action="cancel">取消</button>`}
           </div>
         </div>
         <div class="card detail-card" data-panel="info" hidden>${infoRows}</div>

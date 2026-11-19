@@ -99,6 +99,15 @@
   color: #8a8a8e;
   font-weight: 600;
 }
+.status-rejected {
+  color: #b45309;
+  font-weight: 600;
+}
+.reject-reason {
+  color: #b45309;
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+}
 
 .card-note {
   margin: 10px 0 8px;
