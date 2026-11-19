@@ -34,6 +34,8 @@ document.addEventListener("DOMContentLoaded", () => {
   let applications = []; // 從 API 抓回來的全部申請
   let currentTab = "全部";
   let keyword = "";
+  let openId = null;              // 目前展開的那筆申請 id
+  const detailCache = new Map();  // 已經抓過的詳細資料，避免重複抓
 
   // 建立一個元素；文字一律用 textContent 放進去，
   // 不用 innerHTML，這樣使用者填的內容不會被當成 HTML 執行
@@ -87,9 +89,19 @@ document.addEventListener("DOMContentLoaded", () => {
 
     shown.forEach((a) => {
       const row = el("div", "row");
+      const isOpen = openId === a.id;
+      row.classList.add("row-clickable");
+      if (isOpen) row.classList.add("open");
+      row.tabIndex = 0;
+      row.setAttribute("aria-expanded", String(isOpen));
+      row.addEventListener("click", () => toggleDetail(a.id));
+      row.addEventListener("keydown", (e) => {
+        if (e.key === "Enter" && e.target === row) toggleDetail(a.id);
+      });
 
       const nameCell = el("div", "cell-name", a.applicantName);
       if (a.debug) nameCell.appendChild(el("span", "test-tag", "測試"));
+      nameCell.prepend(el("span", "row-arrow", isOpen ? "▾" : "▸"));
       row.appendChild(nameCell);
 
       const eventCell = el("div");
@@ -101,7 +113,7 @@ document.addEventListener("DOMContentLoaded", () => {
       row.appendChild(el("div", "", a.area));
       row.appendChild(el("div", "", String(a.vehicleCount)));
 
-            const statusCell = el("div");
+      const statusCell = el("div");
       statusCell.appendChild(el("span", "pill " + (STATUS_CLASS[a.status] || ""), a.status));
       if (a.status === "已退回" && a.rejectReason) {
         statusCell.appendChild(el("div", "cell-sub", a.rejectReason));
@@ -113,11 +125,17 @@ document.addEventListener("DOMContentLoaded", () => {
       if (a.status === "審查中") {
         const approveBtn = el("button", "action-btn approve", "通過");
         approveBtn.type = "button";
-        approveBtn.addEventListener("click", () => approve(a, approveBtn));
+        approveBtn.addEventListener("click", (e) => {
+          e.stopPropagation();
+          approve(a, approveBtn);
+        });
 
         const rejectBtn = el("button", "action-btn reject", "退回");
         rejectBtn.type = "button";
-        rejectBtn.addEventListener("click", () => openReject(a));
+        rejectBtn.addEventListener("click", (e) => {
+          e.stopPropagation();
+          openReject(a);
+        });
 
         actionCell.append(approveBtn, rejectBtn);
       } else {
@@ -126,6 +144,7 @@ document.addEventListener("DOMContentLoaded", () => {
       row.appendChild(actionCell);
 
       rowsBox.appendChild(row);
+      if (isOpen) rowsBox.appendChild(buildDetail(a.id));
     });
   }
 
@@ -165,10 +184,113 @@ document.addEventListener("DOMContentLoaded", () => {
 
       const data = await res.json();
       applications = data.applications || [];
+      detailCache.clear(); // 重新載入列表時，詳細資料也要重抓(例如審核後的退回理由)
       render();
     } catch (err) {
       showError("無法載入申請資料，請確認 server 已啟動後重新整理");
     }
+  }
+
+  // ---------- 展開詳細資料 ----------
+
+  function toggleDetail(id) {
+    openId = openId === id ? null : id;
+    renderRows();
+  }
+
+  function buildDetail(id) {
+    const box = el("div", "row-detail");
+    const cached = detailCache.get(id);
+    if (cached) {
+      fillDetail(box, cached);
+    } else {
+      box.appendChild(el("p", "cell-sub", "載入中…"));
+      loadDetail(id, box);
+    }
+    return box;
+  }
+
+  async function loadDetail(id, box) {
+    try {
+      const res = await fetch(`/api/admin/applications/${id}`, {
+        headers: { Authorization: "Bearer " + token },
+      });
+      if (res.status === 401) {
+        goLogin();
+        return;
+      }
+      if (!res.ok) throw new Error("bad status");
+      const data = await res.json();
+      detailCache.set(id, data.application);
+      fillDetail(box, data.application);
+    } catch (err) {
+      box.replaceChildren(el("p", "admin-error", "無法載入詳細資料，請重新整理再試"));
+    }
+  }
+
+  function formatTime(iso) {
+    return iso ? new Date(iso).toLocaleString("zh-TW", { hour12: false }) : "—";
+  }
+
+  function fillDetail(box, d) {
+    box.replaceChildren();
+
+    // 聯絡資料：分成三張小卡片，每張是「標題 + 一列一列的欄位」
+    const groups = [
+      ["登記人", [
+        ["姓名", d.applicantName],
+        ["單位", d.unit],
+        ["電話", d.applicantPhone],
+        ["Email", d.applicantEmail],
+      ]],
+      ["單位主管", [
+        ["姓名", d.supervisorName],
+        ["Email", d.supervisorEmail],
+      ]],
+      ["審核紀錄", [
+        ["申請時間", formatTime(d.createdAt)],
+        ["審核時間", d.reviewedAt ? formatTime(d.reviewedAt) : "尚未審核"],
+        ...(d.rejectReason ? [["退回理由", d.rejectReason]] : []),
+      ]],
+    ];
+
+    const info = el("div", "detail-groups");
+    groups.forEach(([title, fields]) => {
+      const card = el("section", "detail-group");
+      card.appendChild(el("h3", "detail-group-title", title));
+      const list = el("dl", "detail-list");
+      fields.forEach(([label, value]) => {
+        list.append(el("dt", "", label), el("dd", "", value || "—"));
+      });
+      card.appendChild(list);
+      info.appendChild(card);
+    });
+    box.appendChild(info);
+    box.appendChild(info);
+
+    // 車輛清單
+    const vehicles = d.vehicles || [];
+    box.appendChild(el("div", "detail-title", `車輛 ${vehicles.length} 台`));
+    if (vehicles.length === 0) {
+      box.appendChild(el("p", "cell-sub", "沒有車輛資料"));
+      return;
+    }
+
+    const table = el("table", "vehicle-table");
+    const head = el("tr");
+    ["#", "車牌", "駕駛人", "駕駛人電話"].forEach((t) => head.appendChild(el("th", "", t)));
+    table.appendChild(el("thead")).appendChild(head);
+
+    const body = el("tbody");
+    vehicles.forEach((v, i) => {
+      const tr = el("tr");
+      [String(i + 1), v.plateNo, v.driverName, v.driverPhone].forEach((t) =>
+        tr.appendChild(el("td", "", t || "—"))
+      );
+      body.appendChild(tr);
+    });
+    table.appendChild(body);
+    box.appendChild(table);
   }
     // 送出審核；成功回傳 true，失敗回傳錯誤訊息
   async function review(id, action, reason = "") {
