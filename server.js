@@ -273,10 +273,60 @@ app.get("/api/admin/applications", requireAdmin, (req, res) => {
       area: a.area,
       vehicleCount: (a.vehicles || []).length,
       status: displayStatus(a, today),
+      rejectReason: a.rejectReason || "", // 退回理由
       debug: a.debug === true,
     }))
     .sort((x, y) => y.id - x.id); // 新的排前面
   res.json({ ok: true, applications });
+});
+
+// ---------- 後台：審核(通過 / 退回) ----------
+
+const REVIEW_ACTIONS = {
+  approve: "申請通過",
+  reject: "已退回",
+};
+const MAX_REASON = 200; // 退回理由字數上限
+
+// 審核一筆申請(需要登入)；body: { action: "approve" | "reject", reason }
+// 只有「審查中」而且還沒過期的申請可以審核
+app.post("/api/admin/applications/:id/review", requireAdmin, (req, res) => {
+  const action = req.body?.action;
+  const newStatus = REVIEW_ACTIONS[action];
+  if (!newStatus) {
+    return res.status(400).json({ ok: false, message: "審核動作不正確" });
+  }
+
+  const reason = str(req.body?.reason);
+  if (action === "reject" && !reason) {
+    return res.status(400).json({ ok: false, message: "請填寫退回理由" });
+  }
+  if (reason.length > MAX_REASON) {
+    return res.status(400).json({ ok: false, message: `退回理由最多 ${MAX_REASON} 字` });
+  }
+
+  const list = load();
+  const application = list.find((a) => String(a.id) === req.params.id);
+  if (!application) {
+    return res.status(404).json({ ok: false, message: "找不到這筆申請" });
+  }
+
+  // 用顯示狀態判斷，所以已過期的也會被擋下
+  if (displayStatus(application, toDateStr(new Date())) !== "審查中") {
+    return res.status(409).json({ ok: false, message: "這筆申請目前不能審核，請重新整理列表" });
+  }
+
+  application.status = newStatus;
+  application.reviewedAt = new Date().toISOString();
+  if (action === "reject") {
+    application.rejectReason = reason;
+  } else {
+    delete application.rejectReason;
+  }
+  save(list);
+
+  // TODO: 之後要寄信通知申請人(退回時附上理由)，在這裡呼叫寄信功能
+  res.json({ ok: true, status: newStatus });
 });
 
 const PORT = process.env.PORT || 3000;

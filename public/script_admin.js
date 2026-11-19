@@ -14,11 +14,19 @@ document.addEventListener("DOMContentLoaded", () => {
   const summary = document.getElementById("summary");
   const logoutBtn = document.getElementById("logoutBtn");
 
-  // 分頁順序；「已退回」等第三張 issue 做審核功能時再加進來
-  const STATUS_TABS = ["全部", "審查中", "申請通過", "已取消", "已過期"];
+  const rejectDialog = document.getElementById("rejectDialog");
+  const rejectForm = document.getElementById("rejectForm");
+  const rejectTarget = document.getElementById("rejectTarget");
+  const rejectReason = document.getElementById("rejectReason");
+  const rejectError = document.getElementById("rejectError");
+  const rejectCancel = document.getElementById("rejectCancel");
+  const rejectSubmit = document.getElementById("rejectSubmit");
+
+  const STATUS_TABS = ["全部", "審查中", "申請通過", "已退回", "已取消", "已過期"];
   const STATUS_CLASS = {
     審查中: "status-pending",
     申請通過: "status-approved",
+    已退回: "status-rejected",
     已取消: "status-cancelled",
     已過期: "status-expired",
   };
@@ -93,9 +101,29 @@ document.addEventListener("DOMContentLoaded", () => {
       row.appendChild(el("div", "", a.area));
       row.appendChild(el("div", "", String(a.vehicleCount)));
 
-      const statusCell = el("div");
+            const statusCell = el("div");
       statusCell.appendChild(el("span", "pill " + (STATUS_CLASS[a.status] || ""), a.status));
+      if (a.status === "已退回" && a.rejectReason) {
+        statusCell.appendChild(el("div", "cell-sub", a.rejectReason));
+      }
       row.appendChild(statusCell);
+
+      // 操作欄：只有「審查中」可以通過 / 退回
+      const actionCell = el("div", "cell-actions");
+      if (a.status === "審查中") {
+        const approveBtn = el("button", "action-btn approve", "通過");
+        approveBtn.type = "button";
+        approveBtn.addEventListener("click", () => approve(a, approveBtn));
+
+        const rejectBtn = el("button", "action-btn reject", "退回");
+        rejectBtn.type = "button";
+        rejectBtn.addEventListener("click", () => openReject(a));
+
+        actionCell.append(approveBtn, rejectBtn);
+      } else {
+        actionCell.appendChild(el("span", "cell-sub", "—"));
+      }
+      row.appendChild(actionCell);
 
       rowsBox.appendChild(row);
     });
@@ -142,6 +170,79 @@ document.addEventListener("DOMContentLoaded", () => {
       showError("無法載入申請資料，請確認 server 已啟動後重新整理");
     }
   }
+    // 送出審核；成功回傳 true，失敗回傳錯誤訊息
+  async function review(id, action, reason = "") {
+    try {
+      const res = await fetch(`/api/admin/applications/${id}/review`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + token,
+        },
+        body: JSON.stringify({ action, reason }),
+      });
+      if (res.status === 401) {
+        goLogin();
+        return "請先登入";
+      }
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok) return data.message || "審核失敗，請稍後再試";
+      return true;
+    } catch (err) {
+      return "無法連線到 server，請確認 server 已啟動";
+    }
+  }
+
+  // 通過：先確認，避免誤按
+  async function approve(a, btn) {
+    if (!confirm(`確定要通過「${a.applicantName}／${a.eventName}」的申請嗎？`)) return;
+    btn.disabled = true;
+    const result = await review(a.id, "approve");
+    if (result !== true) {
+      btn.disabled = false;
+      showError(result);
+      return;
+    }
+    errorMsg.hidden = true;
+    loadApplications();
+  }
+
+  // 退回：打開對話框填理由
+  let rejectingId = null;
+
+  function openReject(a) {
+    rejectingId = a.id;
+    rejectTarget.textContent = `${a.applicantName}／${a.eventName}（${a.startDate} ~ ${a.endDate}）`;
+    rejectReason.value = "";
+    rejectError.hidden = true;
+    rejectDialog.showModal();
+    rejectReason.focus();
+  }
+
+  rejectCancel.addEventListener("click", () => rejectDialog.close());
+
+  rejectForm.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const reason = rejectReason.value.trim();
+    if (!reason) {
+      rejectError.textContent = "請填寫退回理由";
+      rejectError.hidden = false;
+      return;
+    }
+
+    rejectSubmit.disabled = true;
+    const result = await review(rejectingId, "reject", reason);
+    rejectSubmit.disabled = false;
+
+    if (result !== true) {
+      rejectError.textContent = result;
+      rejectError.hidden = false;
+      return;
+    }
+    rejectDialog.close();
+    errorMsg.hidden = true;
+    loadApplications();
+  });
 
   loadApplications();
 });
