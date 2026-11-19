@@ -89,6 +89,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // 修改：回到第一頁之前，先把目前 step2 的資料存起來
   backBtn.addEventListener("click", () => {
     sessionStorage.setItem("step2Data", JSON.stringify(collectVehicleData()));
+    sessionStorage.setItem("stepDirection", "back"); // 讓第一頁知道是「上一步」回來的，要播倒退動畫
     window.location.href = "stepOne.html";
   });
 

@@ -10,11 +10,12 @@
 <body>
   <section class="screen" id="step2">
     <div class="page">
+      <h1 class="page-title">北市大臨時停車系統</h1>
       <div class="step-indicator">
         <p class="step-text">步驟 2 / 2</p>
         <div class="step-bars">
-          <span class="step-bar"></span>
           <span class="step-bar active"></span>
+          <span class="step-bar filling"></span>
         </div>
       </div>
       <form id="step2Form" novalidate>
@@ -45,8 +46,11 @@
         <p class="hint-car">*申請車輛至多10台(已登記 <span id="vehicleCount">1</span> / 10)</p>
         <button type="button" class="addcar-btn" id="addVehicleBtn">＋</button>
         <div class="bottom-bar">
-          <button type="button" class="primary-btn" id="backBtn">上一步</button>
-          <button type="submit" class="primary-btn">送出申請</button>
+          <div class="bottom-row">
+            <button type="button" class="primary-btn" id="backBtn">上一步</button>
+            <button type="submit" class="primary-btn">送出申請</button>
+          </div>
+          <a href="index.html"><button type="button" class="primary-btn">返回首頁</button></a>
         </div>
       </form>
     </div>

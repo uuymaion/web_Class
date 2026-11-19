@@ -274,3 +274,16 @@ button {
     padding: 24px 14px 40px;
   }
 }
+
+/* 系統設定「減少動態效果」的人：全站動畫與過場效果一律幾乎瞬間完成 */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-delay: 0ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
