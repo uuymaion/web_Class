@@ -245,22 +245,8 @@ app.get("/api/admin/check", requireAdmin, (req, res) => {
 
 // ---------- 後台：申請列表 ----------
 
-// 把 Date 轉成 "YYYY-MM-DD"(用本地時間算)
-const toDateStr = (d) => {
-  const y = d.getFullYear();
-  const m = String(d.getMonth() + 1).padStart(2, "0");
-  const day = String(d.getDate()).padStart(2, "0");
-  return `${y}-${m}-${day}`;
-};
-
-// 顯示用的狀態：結束日期已過、而且是「審查中」或「申請通過」的，顯示成「已過期」
-// 只影響回傳的內容，不會改動 data.json 裡存的資料
-const displayStatus = (a, today) => {
-  const status = a.status || DEFAULT_STATUS;
-  const open = status === "審查中" || status === "申請通過";
-  return open && a.endDate && a.endDate < today ? "已過期" : status;
-};
-
+// 用台灣時間算 "YYYY-MM-DD"，部署到其他時區的主機也不會差一天
+const toDateStr = (d) => d.toLocaleDateString("sv-SE", { timeZone: "Asia/Taipei" });
 
 // 活動結束日已經過了就算過期(不管是什麼狀態)
 const isExpired = (a, today) => Boolean(a.endDate) && a.endDate < today;
@@ -277,8 +263,10 @@ const groupOf = (a) => {
 const byGroupThenDate = (x, y) => {
   const gx = groupOf(x), gy = groupOf(y);
   if (gx !== gy) return gx - gy;
-  if (gx < 2) return String(x.startDate).localeCompare(String(y.startDate));
-  return String(y.endDate).localeCompare(String(x.endDate));
+  const byDate = gx < 2
+    ? String(x.startDate).localeCompare(String(y.startDate))
+    : String(y.endDate).localeCompare(String(x.endDate));
+  return byDate || y.id - x.id; // 日期一樣時，新申請的排前面
 };
 
 // 列出全部申請(需要登入)；只回傳列表要用的欄位，不含電話和 email
@@ -299,7 +287,8 @@ app.get("/api/admin/applications", requireAdmin, (req, res) => {
       rejectReason: a.rejectReason || "", // 退回理由
       debug: a.debug === true,
     }))
-    .sort(byGroupThenDate);
+    .sort(byGroupThenDate)
+    .map((x) => ({ ...x, group: groupOf(x) }));
   res.json({ ok: true, applications });
 });
 
@@ -309,7 +298,7 @@ app.get("/api/admin/applications/:id", requireAdmin, (req, res) => {
   if (!a) return res.status(404).json({ ok: false, message: "找不到這筆申請" });
   res.json({
     ok: true,
-    application: { ...a, status: displayStatus(a, toDateStr(new Date())) },
+    application: { ...a, expired: isExpired(a, toDateStr(new Date())) },
   });
 });
 
@@ -344,8 +333,8 @@ app.post("/api/admin/applications/:id/review", requireAdmin, (req, res) => {
     return res.status(404).json({ ok: false, message: "找不到這筆申請" });
   }
 
-  // 用顯示狀態判斷，所以已過期的也會被擋下
-  if (displayStatus(application, toDateStr(new Date())) !== "審查中") {
+  // 只有還沒過期的「審查中」可以審核
+  if (application.status !== "審查中" || isExpired(application, toDateStr(new Date()))) {
     return res.status(409).json({ ok: false, message: "這筆申請目前不能審核，請重新整理列表" });
   }
 

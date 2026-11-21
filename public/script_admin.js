@@ -30,7 +30,6 @@ document.addEventListener("DOMContentLoaded", () => {
     申請通過: "status-approved",
     已退回: "status-rejected",
     已取消: "status-cancelled",
-    已過期: "status-expired",
   };
 
   let applications = []; // 從 API 抓回來的全部申請
@@ -70,14 +69,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function countOf(tab) {
     return applications.filter((a) => inTab(a, tab)).length;
-  }
-
-  // 分區：0 = 審查中、1 = 申請通過、2 = 已過期 / 已取消 / 已退回(跟 server 的 groupOf 一樣)
-  function groupOf(a) {
-    if (a.expired) return 2;
-    if (a.status === "審查中") return 0;
-    if (a.status === "申請通過") return 1;
-    return 2;
   }
 
   // 從今天到 dateStr("YYYY-MM-DD") 差幾天；0 = 今天，負數 = 已經過了
@@ -122,9 +113,9 @@ document.addEventListener("DOMContentLoaded", () => {
     let lastGroup = -1;
     shown.forEach((a) => {
       // 「全部」分頁：每一區開頭加一列區塊標題
-      const group = groupOf(a);
+      const group = a.group;
       if (currentTab === "全部" && group !== lastGroup) {
-        const count = shown.filter((x) => groupOf(x) === group).length;
+        const count = shown.filter((x) => x.group === group).length;
         rowsBox.appendChild(el("div", "section-head", `${GROUP_TITLES[group]}　${count}`));
         lastGroup = group;
       }
