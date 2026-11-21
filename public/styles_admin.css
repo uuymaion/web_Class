@@ -426,3 +426,43 @@
 .vehicle-table tbody tr:last-child td {
   border-bottom: none;
 }
+
+
+/* ---------- 分區、過期、即將開始 ---------- */
+/* 「全部」分頁的區塊標題 */
+.section-head {
+  padding: 10px 24px;
+  background: #f4f6f3;
+  border-bottom: 1px solid #dde3df;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--accent);
+}
+
+/* 過期：整列變灰 */
+.row-expired {
+  color: #9aa09c;
+}
+
+.row-expired .cell-sub,
+.row-expired .test-tag {
+  color: #b5bab6;
+}
+
+.row-expired .pill {
+  background: #f1f2f1;
+  color: #9aa09c;
+  border-color: transparent;
+}
+
+/* 審查中且快開始：左邊一條橘色、日期下面加提醒 */
+.row-soon {
+  box-shadow: inset 4px 0 0 #d97706;
+}
+
+.soon-tag {
+  margin-top: 4px;
+  font-size: 12px;
+  font-weight: 700;
+  color: #b45309;
+}

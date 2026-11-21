@@ -165,3 +165,17 @@
 .empty-card .hint {
   margin-bottom: 16px;
 }
+
+
+
+/* ---------- 已過期：資料變灰，按鈕維持原樣 ---------- */
+.result-group.is-expired .card {
+  background: #ececea;
+}
+
+.result-group.is-expired .info-label,
+.result-group.is-expired .info-value,
+.result-group.is-expired .info-value span,
+.result-group.is-expired .card-note {
+  color: #9a9a9e;
+}

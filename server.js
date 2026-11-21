@@ -109,13 +109,14 @@ app.post("/api/query", (req, res) => {
   }
 
   const list = load();
+  const today = toDateStr(new Date());
   let results;
 
   if (role === "applicant") {
     // 登記人：可以看到自己登記的完整資料
     results = list
       .filter((a) => isApplicant(a, name, phone))
-      .map((a) => ({ ...a, status: a.status || DEFAULT_STATUS }));
+      .map((a) => ({ ...a, status: a.status || DEFAULT_STATUS, expired: isExpired(a, today) }));
   } else {
     // 駕駛人：只能看到活動資訊 + 「自己的」車輛，看不到別人的手機或 email
     results = list
@@ -134,11 +135,12 @@ app.post("/api/query", (req, res) => {
         endDate: a.endDate,
         area: a.area,
         status: a.status || DEFAULT_STATUS,
+        expired: isExpired(a, today),
         vehicles: mine,
       }));
   }
 
-  results.sort((x, y) => y.id - x.id); // 新的排前面
+  results.sort(byGroupThenDate);
   res.json({ ok: true, role, results });
 });
 
@@ -259,6 +261,26 @@ const displayStatus = (a, today) => {
   return open && a.endDate && a.endDate < today ? "已過期" : status;
 };
 
+
+// 活動結束日已經過了就算過期(不管是什麼狀態)
+const isExpired = (a, today) => Boolean(a.endDate) && a.endDate < today;
+
+// 分區：0 = 審查中、1 = 申請通過、2 = 已過期 / 已取消 / 已退回
+const groupOf = (a) => {
+  if (a.expired) return 2;
+  if (a.status === "審查中") return 0;
+  if (a.status === "申請通過") return 1;
+  return 2;
+};
+
+// 排序：先照分區；上兩區開始日期近的在前，最下區結束日期新的在前(舊的在最下面)
+const byGroupThenDate = (x, y) => {
+  const gx = groupOf(x), gy = groupOf(y);
+  if (gx !== gy) return gx - gy;
+  if (gx < 2) return String(x.startDate).localeCompare(String(y.startDate));
+  return String(y.endDate).localeCompare(String(x.endDate));
+};
+
 // 列出全部申請(需要登入)；只回傳列表要用的欄位，不含電話和 email
 app.get("/api/admin/applications", requireAdmin, (req, res) => {
   const today = toDateStr(new Date());
@@ -272,11 +294,12 @@ app.get("/api/admin/applications", requireAdmin, (req, res) => {
       endDate: a.endDate,
       area: a.area,
       vehicleCount: (a.vehicles || []).length,
-      status: displayStatus(a, today),
+      status: a.status || DEFAULT_STATUS,
+      expired: isExpired(a, today),
       rejectReason: a.rejectReason || "", // 退回理由
       debug: a.debug === true,
     }))
-    .sort((x, y) => y.id - x.id); // 新的排前面
+    .sort(byGroupThenDate);
   res.json({ ok: true, applications });
 });
 
