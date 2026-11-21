@@ -11,7 +11,8 @@ try {
 
 const app = express(); // 建立server並存在變數app裡
 app.use(express.json()); // 自動把fetch送來的JSON字串轉成物件(放在req.body)
-app.use(express.static(path.join(__dirname, "public"))); // 把public公開成網頁，網址 / 會自動開 index.html
+app.use(express.static(path.join(__dirname, "public", "html")));
+app.use(express.static(path.join(__dirname, "public")));
 
 const FILE = path.join(__dirname, "data.json");
 const MAX_VEHICLES = 10;
