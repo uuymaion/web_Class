@@ -352,4 +352,10 @@ app.post("/api/admin/applications/:id/review", requireAdmin, (req, res) => {
 });
 
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => console.log(`http://localhost:${PORT}`));
+app.listen(PORT, (err) => {
+  if (err) {
+    console.error("server 啟動失敗：", err.code, err.message);
+    process.exit(1);
+  }
+  console.log(`http://localhost:${PORT}`);
+});
