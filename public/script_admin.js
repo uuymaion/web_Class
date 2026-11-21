@@ -23,12 +23,13 @@ document.addEventListener("DOMContentLoaded", () => {
   const rejectSubmit = document.getElementById("rejectSubmit");
 
   const STATUS_TABS = ["全部", "審查中", "申請通過", "已退回", "已取消", "已過期"];
+  const GROUP_TITLES = ["審查中", "申請通過", "已過期 / 已取消 / 已退回"];
+  const SOON_DAYS = 5; // 審查中的申請，開始日期在幾天內要提醒
   const STATUS_CLASS = {
     審查中: "status-pending",
     申請通過: "status-approved",
     已退回: "status-rejected",
     已取消: "status-cancelled",
-    已過期: "status-expired",
   };
 
   let applications = []; // 從 API 抓回來的全部申請
@@ -57,12 +58,34 @@ document.addEventListener("DOMContentLoaded", () => {
     errorMsg.hidden = false;
   }
 
-  function countOf(status) {
-    return status === "全部"
-      ? applications.length
-      : applications.filter((a) => a.status === status).length;
+  // 這筆申請屬不屬於某個分頁
+  // 審查中、申請通過只算還沒過期的；已過期看 expired；已取消、已退回只看狀態
+  function inTab(a, tab) {
+    if (tab === "全部") return true;
+    if (tab === "已過期") return a.expired;
+    if (tab === "審查中" || tab === "申請通過") return a.status === tab && !a.expired;
+    return a.status === tab;
   }
 
+  function countOf(tab) {
+    return applications.filter((a) => inTab(a, tab)).length;
+  }
+
+  // 從今天到 dateStr("YYYY-MM-DD") 差幾天；0 = 今天，負數 = 已經過了
+  function daysFromToday(dateStr) {
+    const [y, m, d] = String(dateStr).split("-").map(Number);
+    const now = new Date();
+    const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+    return Math.round((new Date(y, m - 1, d) - today) / 86400000);
+  }
+
+  // 審查中、沒過期、開始日期在 SOON_DAYS 天內的，回傳提醒文字；不用提醒就回傳空字串
+  function soonLabel(a) {
+    if (a.expired || a.status !== "審查中") return "";
+    const d = daysFromToday(a.startDate);
+    if (d < 0 || d > SOON_DAYS) return "";
+    return d === 0 ? "今天開始" : d === 1 ? "明天開始" : `${d} 天後開始`;
+  }
   function renderTabs() {
     tabsBox.replaceChildren();
     STATUS_TABS.forEach((status) => {
@@ -79,7 +102,7 @@ document.addEventListener("DOMContentLoaded", () => {
   function renderRows() {
     const kw = keyword.trim();
     const shown = applications.filter((a) => {
-      const okTab = currentTab === "全部" || a.status === currentTab;
+      const okTab = inTab(a, currentTab);
       const okText = !kw || [a.applicantName, a.unit, a.eventName].some((s) => String(s || "").includes(kw));
       return okTab && okText;
     });
@@ -87,8 +110,18 @@ document.addEventListener("DOMContentLoaded", () => {
     rowsBox.replaceChildren();
     emptyMsg.hidden = shown.length > 0;
 
+    let lastGroup = -1;
     shown.forEach((a) => {
+      // 「全部」分頁：每一區開頭加一列區塊標題
+      const group = a.group;
+      if (currentTab === "全部" && group !== lastGroup) {
+        const count = shown.filter((x) => x.group === group).length;
+        rowsBox.appendChild(el("div", "section-head", `${GROUP_TITLES[group]}　${count}`));
+        lastGroup = group;
+      }
+
       const row = el("div", "row");
+      if (a.expired) row.classList.add("row-expired");
       const isOpen = openId === a.id;
       row.classList.add("row-clickable");
       if (isOpen) row.classList.add("open");
@@ -109,7 +142,13 @@ document.addEventListener("DOMContentLoaded", () => {
       eventCell.appendChild(el("div", "cell-sub", a.unit));
       row.appendChild(eventCell);
 
-      row.appendChild(el("div", "", `${a.startDate} ~ ${a.endDate}`));
+      const dateCell = el("div", "", `${a.startDate} ~ ${a.endDate}`);
+      const soon = soonLabel(a);
+      if (soon) {
+        row.classList.add("row-soon");
+        dateCell.appendChild(el("div", "soon-tag", `⚠ ${soon}`));
+      }
+      row.appendChild(dateCell);
       row.appendChild(el("div", "", a.area));
       row.appendChild(el("div", "", String(a.vehicleCount)));
 
@@ -122,7 +161,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
       // 操作欄：只有「審查中」可以通過 / 退回
       const actionCell = el("div", "cell-actions");
-      if (a.status === "審查中") {
+      if (a.status === "審查中" && !a.expired) {
         const approveBtn = el("button", "action-btn approve", "通過");
         approveBtn.type = "button";
         approveBtn.addEventListener("click", (e) => {

@@ -77,7 +77,7 @@ document.addEventListener("DOMContentLoaded", () => {
       .join("");
 
     return `
-      <article class="result-group" data-id="${esc(a.id)}">
+      <article class="result-group${a.expired ? " is-expired" : ""}" data-id="${esc(a.id)}">
         <div class="card result-card">
           ${row("登記人", esc(a.applicantName), pill("toggle-info", "更多申請資料"))}
           ${row("登記車數", vehicles.length, pill("toggle-vehicles", "點擊查看"))}
@@ -104,7 +104,7 @@ document.addEventListener("DOMContentLoaded", () => {
       .join("");
 
     return `
-      <article class="result-group" data-id="${esc(a.id)}">
+      <article class="result-group${a.expired ? " is-expired" : ""}" data-id="${esc(a.id)}">
         <div class="card result-card">
           ${row("登記人", esc(a.applicantName))}
           ${row("活動名稱", esc(a.eventName))}
