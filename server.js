@@ -11,7 +11,8 @@ try {
 
 const app = express(); // 建立server並存在變數app裡
 app.use(express.json()); // 自動把fetch送來的JSON字串轉成物件(放在req.body)
-app.use(express.static(path.join(__dirname, "public"))); // 把public公開成網頁，網址 / 會自動開 index.html
+app.use(express.static(path.join(__dirname, "public", "html")));
+app.use(express.static(path.join(__dirname, "public")));
 
 const FILE = path.join(__dirname, "data.json");
 const MAX_VEHICLES = 10;
@@ -352,4 +353,10 @@ app.post("/api/admin/applications/:id/review", requireAdmin, (req, res) => {
 });
 
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => console.log(`http://localhost:${PORT}`));
+app.listen(PORT, (err) => {
+  if (err) {
+    console.error("server 啟動失敗：", err.code, err.message);
+    process.exit(1);
+  }
+  console.log(`http://localhost:${PORT}`);
+});

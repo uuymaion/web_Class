@@ -287,3 +287,42 @@ button {
     scroll-behavior: auto !important;
   }
 }
+
+
+/* ---------- 回到頂端(左上角垂下來的小標籤) ---------- */
+.back-to-top {
+  position: fixed;
+  top: 0;
+  left: 24px;
+  z-index: 10;
+  width: 48px;
+  height: 40px;
+  padding: 0;
+  border: 1px solid #c4c8c2;
+  border-top: none;
+  border-radius: 0 0 24px 24px; /* 上面平的貼著邊框、下面圓的 */
+  background: #ffffff;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+  color: #8a8a8e; /* 箭頭的灰色 */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transform: translateY(calc(-100% - 8px)); /* 平常藏在畫面上方(多推 8px 連陰影一起藏) */
+  visibility: hidden; /* 藏起來時也不能用 Tab 選到 */
+  transition: transform 0.25s ease, visibility 0.25s;
+}
+
+.back-to-top.show {
+  transform: translateY(0); /* 捲下去之後滑下來 */
+  visibility: visible;
+}
+
+.back-to-top:hover {
+  color: var(--accent);
+}
+
+.back-to-top:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
