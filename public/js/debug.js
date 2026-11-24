@@ -47,7 +47,8 @@
       const n = randInt(100, 999);
       setValue("#unit", pick(["資訊科學系", "體育學院", "音樂系", "數學系", "訪客"]));
       setValue("#eventName", pick(["迎新茶會", "校慶園遊會", "社團成果展", "籃球友誼賽", "畢業展"]));
-      setValue("#startDate", (start));
+      setValue("#startDate", dateAfter(start));
+      document.querySelector("#startDate")?.dispatchEvent(new Event("change")); // 讓結束日的最小值跟著更新
       setValue("#endDate", dateAfter(start + randInt(0, 3))); // 結束日不早於開始日
       pick(Array.from(document.querySelectorAll('input[name="area"]'))).checked = true;
       setValue("#applicantName", randName());
