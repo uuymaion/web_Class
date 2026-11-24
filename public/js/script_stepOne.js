@@ -1,4 +1,3 @@
-// 依照從哪裡進來，在 <html> 加上對應的 class，CSS 就會播對應的動畫
 //   從首頁按「登記」進來 -> from-index(前進動畫)
 //   從第 2 頁按「上一步」回來 -> from-step2(倒退動畫)
 // 放在最外面(不等 DOMContentLoaded)，讓畫面第一次出現前就加好，避免閃一下
@@ -9,9 +8,9 @@ sessionStorage.removeItem("stepDirection"); // 只播這一次，重新整理就
 
 document.addEventListener("DOMContentLoaded", () => { 
   // addEventListener 可以理解成監聽器「當某件事發生時，幫我執行某個函式」
-  // DOMContentLoaded 簡單說就是html建立完成的時候，這個條件就是上述的「某件事」
+  // DOMContentLoaded 簡單說就是html建立完成的時候
   
-  const step1Form = document.getElementById("step1Form");
+  const step1Form = document.getElementById("step1Form"); // 找所有id元素
   const startDate = step1Form.elements["startDate"];
   const endDate = step1Form.elements["endDate"];
   const savedData = sessionStorage.getItem("step1Data");
@@ -77,10 +76,8 @@ document.addEventListener("DOMContentLoaded", () => {
     if (!step1Data.applicantName || step1Data.applicantName.trim() === "")  errors.push("申請人姓名");
     if (!step1Data.applicantEmail || step1Data.applicantEmail.trim() === "")  errors.push("申請人Email");
     if (!step1Data.applicantPhone || step1Data.applicantPhone.trim() === "")  errors.push("申請人聯絡電話");
-        if (!step1Data.supervisorName || step1Data.supervisorName.trim() === "")  errors.push("單位主管姓名");
+    if (!step1Data.supervisorName || step1Data.supervisorName.trim() === "")  errors.push("單位主管姓名");
     if (!step1Data.supervisorEmail || step1Data.supervisorEmail.trim() === "")  errors.push("單位主管Email");
-
-
 
     if (!DEBUG && errors.length > 0) {
       alert("尚未輸入以下欄位：\n" + errors.join("\n"));
