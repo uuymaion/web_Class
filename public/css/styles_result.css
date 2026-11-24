@@ -18,87 +18,202 @@
   color: var(--text-secondary);
 }
 
-/* 一筆申請 = 一張主卡片 + 兩張可展開的詳細卡片 */
-.result-group {
-  margin-bottom: 22px;
-}
-
-.result-group .card + .card {
-  margin-top: 14px;
-}
-
-.result-card,
-.detail-card {
-  padding: 6px 20px 18px;
-}
-
-/* 一列：左邊標題、中間內容、右邊(可有)按鈕，下方有分隔線 */
-.info-row {
-  display: grid;
-  grid-template-columns: 92px 1fr auto;
-  align-items: center;
-  column-gap: 8px;
-  min-height: 52px;
-  padding: 8px 0;
-  border-bottom: 1px solid #6b6b6f;
-  font-size: 15px;
-}
-
-.info-value {
-  font-size: 14px;
-  overflow-wrap: anywhere; /* 很長的 email 會自動換行 */
-}
-
-/* 卡片的最後一列不要分隔線(詳細卡片、駕駛人卡片) */
-.detail-card .info-row:last-child,
-.result-card .info-row:last-child {
-  border-bottom: none;
-}
-
-/* 灰色小按鈕：更多申請資料 / 點擊查看 / 收起 */
-.pill-btn {
-  height: 30px;
-  padding: 0 14px;
-  border: none;
-  border-radius: 6px;
-  background: #58595c;
-  color: #fff;
+/* ---------- 分段標題：進行中 / 已結束、已取消 ---------- */
+.section-title {
+  margin: 18px 4px 10px;
   font-size: 13px;
-  white-space: nowrap;
+  font-weight: 700;
+  color: var(--text-secondary);
+}
+
+/* ---------- 一筆申請(長條) ---------- */
+.app-item {
+  margin-bottom: 10px;
+  border-radius: 12px;
+  background: var(--card-bg);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+  overflow: hidden;
+}
+
+.app-item.is-open {
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.14);
+}
+
+/* 摘要那一條：整條都可以按 */
+.app-head {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 14px;
+  border: none;
+  box-shadow: none; /* 蓋掉 styles.css 給所有 button 的陰影 */
+  background: none;
+  font: inherit;
+  color: inherit;
+  text-align: left;
   cursor: pointer;
 }
 
-.pill-btn:hover {
-  background: #3f4043;
+.app-head:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: -2px;
 }
 
-/* 申請狀態的顏色 */
-.status-ok {
+/* 左邊的日期方塊 */
+.date-block {
+  flex-shrink: 0;
+  width: 50px;
+  padding-right: 10px;
+  border-right: 1px solid #e3e6e1;
+  text-align: center;
+}
+
+.date-block b {
+  display: block;
+  font-size: 22px;
+  line-height: 1.1;
   color: var(--accent);
-  font-weight: 600;
 }
 
-.status-pending {
-  color: #d93025;
-  font-weight: 600;
+.date-block span {
+  font-size: 11px;
+  color: var(--text-secondary);
 }
 
-.status-cancel {
-  color: #8a8a8e;
-  font-weight: 600;
+.app-main {
+  flex: 1;
+  min-width: 0;
 }
-.status-rejected {
-  color: #b45309;
-  font-weight: 600;
+
+.app-title {
+  display: block;
+  font-size: 15px;
+  font-weight: 700;
+  overflow: hidden;
+  text-overflow: ellipsis; /* 活動名稱太長就變成 … */
+  white-space: nowrap;
 }
-.reject-reason {
-  color: #b45309;
+
+.app-meta {
+  display: block;
+  margin-top: 2px;
+  font-size: 12px;
+  color: var(--text-secondary);
+}
+
+.chevron {
+  flex-shrink: 0;
+  color: #aaa;
+  font-size: 18px;
+  transition: transform 0.2s ease;
+}
+
+.is-open .chevron {
+  transform: rotate(90deg); /* 展開時箭頭轉向下 */
+}
+
+/* 狀態標籤 */
+.status-tag {
+  flex-shrink: 0;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.tag-pending  { background: #fbeae7; color: #a93226; }
+.tag-ok       { background: #e1efe7; color: #1f5a3c; }
+.tag-rejected { background: #fdf1dc; color: #b45309; }
+.tag-cancel   { background: #eceef0; color: #4b5563; }
+
+/* ---------- 展開的詳細資料 ---------- */
+.app-detail {
+  padding: 4px 14px 14px;
+  border-top: 1px solid #e3e6e1;
+}
+
+.reject-box {
+  margin-top: 12px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  background: #fdf1dc;
+  color: #7a3d06;
+  font-size: 13px;
   line-height: 1.5;
   overflow-wrap: anywhere;
 }
 
+.reject-box b {
+  display: block;
+  margin-bottom: 2px;
+  color: #b45309;
+}
+
+.detail-title {
+  margin: 14px 0 8px;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--accent);
+}
+
+/* 活動資訊：兩欄 */
+.info-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px 14px;
+}
+
+.info-item {
+  min-width: 0;
+  font-size: 13px;
+  font-weight: 600;
+  overflow-wrap: anywhere; /* 很長的 email 會自動換行 */
+}
+
+.info-item span {
+  display: block;
+  font-size: 11px;
+  font-weight: 400;
+  color: var(--text-secondary);
+}
+
+/* 車輛：一台一列 */
+.car-list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.car-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 10px;
+  border-radius: 8px;
+  background: #f5f7f4;
+  font-size: 13px;
+}
+
+/* 車牌外框 */
+.plate {
+  padding: 1px 6px;
+  border: 1.5px solid #333;
+  border-radius: 4px;
+  background: #fff;
+  font-family: ui-monospace, Menlo, Consolas, monospace;
+  font-weight: 700;
+}
+
+.car-phone {
+  margin-left: auto;
+  font-size: 12px;
+  color: var(--text-secondary);
+}
+
 .card-note {
-  margin: 10px 0 8px;
+  margin: 12px 0 8px;
   font-size: 11px;
   color: var(--text-secondary);
 }
@@ -168,14 +283,17 @@
 
 
 
-/* ---------- 已過期：資料變灰，按鈕維持原樣 ---------- */
-.result-group.is-expired .card {
-  background: #ececea;
+/* ---------- 已過期 / 已取消：整條變淡，按鈕維持原樣 ---------- */
+.app-item.is-ended .app-head {
+  opacity: 0.55;
 }
 
-.result-group.is-expired .info-label,
-.result-group.is-expired .info-value,
-.result-group.is-expired .info-value span,
-.result-group.is-expired .card-note {
-  color: #9a9a9e;
+.app-item.is-ended .app-detail {
+  color: #8a8a8e;
+}
+
+/* 查無資料時的「重新查詢」 */
+.research-btn {
+  width: auto;
+  padding: 0 24px;
 }
