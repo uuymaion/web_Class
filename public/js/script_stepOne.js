@@ -4,7 +4,8 @@
 const stepDirection = sessionStorage.getItem("stepDirection");
 if (stepDirection === "forward") document.documentElement.classList.add("from-index");
 if (stepDirection === "back") document.documentElement.classList.add("from-step2");
-sessionStorage.removeItem("stepDirection"); // 只播這一次，重新整理就不會再播
+// 執行完上面就把stepDirection的項目刪除，重新整理就不會再執行一次
+sessionStorage.removeItem("stepDirection");
 
 document.addEventListener("DOMContentLoaded", () => { 
   // addEventListener 可以理解成監聽器「當某件事發生時，幫我執行某個函式」
@@ -19,6 +20,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // 日期欄位需要用"YYYY-MM-DD"的格式
   // 用本地時間來算；toISOString() 是用 UTC，台灣早上 8 點前會變成「昨天」
+  // padStart是可以用來補固定長度字串的空位
   const toDateStr = (d) => {
     const y = d.getFullYear();
     const m = String(d.getMonth() + 1).padStart(2, "0");

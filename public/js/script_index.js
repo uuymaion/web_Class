@@ -7,6 +7,6 @@ document.addEventListener("DOMContentLoaded", () => {
   document.getElementById("registerLink").addEventListener("click", () => {
     sessionStorage.removeItem("step1Data");
     sessionStorage.removeItem("step2Data");
-    sessionStorage.setItem("stepDirection", "forward"); // 讓第一頁知道是從首頁進來的，要播前進動畫
+    sessionStorage.setItem("stepDirection", "forward"); // 在stepDirection的位置放forward
   });
 });
