@@ -12,37 +12,45 @@
     <div class="page">
 
       <!-- 登記人查詢 -->
-      <section class="search-block">
-        <h2 class="search-title">我是登記人</h2>
-        <form class="card search-form" data-role="applicant" novalidate>
-          <div class="field">
-            <label for="applicantName">登記人姓名</label>
-            <input type="text" id="applicantName" autocomplete="name">
-          </div>
-          <div class="field">
-            <label for="applicantPhone">登記人手機號碼</label>
-            <input type="tel" id="applicantPhone" inputmode="numeric" autocomplete="tel">
-          </div>
-          <button type="submit" class="search-btn">查詢</button>
-        </form>
-      </section>
+      <h1 class="page-title">查詢申請</h1>
 
-      <!-- 駕駛人查詢 -->
-      <section class="search-block">
-        <h2 class="search-title">我是駕駛人</h2>
-        <form class="card search-form" data-role="driver" novalidate>
-          <div class="field">
-            <label for="driverName">駕駛人姓名</label>
-            <input type="text" id="driverName" autocomplete="name">
-          </div>
-          <div class="field">
-            <label for="driverPhone">駕駛人手機號碼</label>
-            <input type="tel" id="driverPhone" inputmode="numeric" autocomplete="tel">
-          </div>
-          <button type="submit" class="search-btn">查詢</button>
-        </form>
-      </section>
+      <!-- 先選身分 -->
+      <fieldset class="role-picker">
+        <legend class="sr-only">選擇查詢身分</legend>
 
+        <label class="role-tile">
+          <input type="radio" name="role" value="applicant" checked>
+          <span class="role-icon" aria-hidden="true">📝</span>
+          <span class="role-text">
+            <b>我是登記人</b>
+            <small>查看、取消、重新送審</small>
+          </span>
+          <span class="role-radio" aria-hidden="true"></span>
+        </label>
+
+        <label class="role-tile">
+          <input type="radio" name="role" value="driver">
+          <span class="role-icon" aria-hidden="true">🚗</span>
+          <span class="role-text">
+            <b>我是駕駛人</b>
+            <small>查看自己的停車資格</small>
+          </span>
+          <span class="role-radio" aria-hidden="true"></span>
+        </label>
+      </fieldset>
+
+      <!-- 再填資料 -->
+      <form class="card search-form" id="searchForm" novalidate>
+        <div class="field">
+          <label for="queryName" id="nameLabel">登記人姓名</label>
+          <input type="text" id="queryName" autocomplete="name" placeholder="請輸入姓名">
+        </div>
+        <div class="field">
+          <label for="queryPhone" id="phoneLabel">登記人手機號碼</label>
+          <input type="tel" id="queryPhone" inputmode="numeric" autocomplete="tel" placeholder="09xxxxxxxx">
+        </div>
+        <button type="submit" class="primary-btn search-btn">查詢</button>
+      </form>
       <div class="bottom-bar">
         <button type="button" class="primary-btn" id="homeBtn">返回首頁</button>
       </div>
