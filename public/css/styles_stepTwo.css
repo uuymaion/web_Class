@@ -30,7 +30,7 @@
 
 .delete-btn {
   position: absolute;
-  top: 0;
+  top: -4px;
   right: 0;
   background: transparent;
   border: none;
@@ -50,4 +50,73 @@
   box-shadow: none;
   outline: none;
   color: #d93025;
+}
+
+
+/* 第二組以後上面有分隔線和 20px 間距，垃圾桶也要往下移才會跟「車號」對齊 */
+.vehicle-group + .vehicle-group .delete-btn {
+  top: 20px;
+}
+
+/* ---------- 從第 1 頁進來的動畫 ---------- */
+
+/* 第 2 段進度條：進到這頁時從左往右填滿 */
+.step-bar.filling {
+  position: relative;
+  overflow: hidden;
+}
+
+.step-bar.filling::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: var(--accent);
+  transform-origin: left;
+  animation: bar-fill 0.5s ease-out 0.15s both;
+}
+
+/* 從寬度0到滿版的動畫，css的定義在前在後都沒差 */
+@keyframes bar-fill {
+  from { transform: scaleX(0); }
+  to   { transform: scaleX(1); }
+}
+
+/* 車輛卡片：從右邊滑進來 */
+#vehicleList {
+  animation: slide-in 0.35s ease-out both;
+}
+
+@keyframes slide-in {
+  from { opacity: 0; transform: translateX(24px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+/* 上一步、送出申請並排，各佔一半 */
+.bottom-row {
+  display: flex;
+  gap: 12px;
+}
+
+.bottom-row > * {
+  flex: 1;
+  min-width: 0;
+}
+
+
+/* 第二組以後上面有分隔線和 20px 間距，垃圾桶也要跟著往下移 */
+.vehicle-group + .vehicle-group .delete-btn {
+  top: 16px; /* 20px 間距 - 往上挪的 4px */
+}
+
+/* 垃圾桶的蓋子：滑鼠移上去時，以左邊為軸掀開 */
+.delete-btn .lid {
+  transform-box: view-box; /* 用 svg 的座標當基準，下面的 4px 6px 就是蓋子左端 */
+  transform-origin: 4px 6px;
+  transition: transform 0.2s ease;
+}
+
+.delete-btn:hover .lid,
+.delete-btn:focus-visible .lid {
+  transform: rotate(-15deg);
 }
