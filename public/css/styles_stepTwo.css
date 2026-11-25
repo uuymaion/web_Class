@@ -30,7 +30,7 @@
 
 .delete-btn {
   position: absolute;
-  top: 0;
+  top: -4px;
   right: 0;
   background: transparent;
   border: none;
@@ -101,4 +101,22 @@
 .bottom-row > * {
   flex: 1;
   min-width: 0;
+}
+
+
+/* 第二組以後上面有分隔線和 20px 間距，垃圾桶也要跟著往下移 */
+.vehicle-group + .vehicle-group .delete-btn {
+  top: 16px; /* 20px 間距 - 往上挪的 4px */
+}
+
+/* 垃圾桶的蓋子：滑鼠移上去時，以左邊為軸掀開 */
+.delete-btn .lid {
+  transform-box: view-box; /* 用 svg 的座標當基準，下面的 4px 6px 就是蓋子左端 */
+  transform-origin: 4px 6px;
+  transition: transform 0.2s ease;
+}
+
+.delete-btn:hover .lid,
+.delete-btn:focus-visible .lid {
+  transform: rotate(-15deg);
 }
