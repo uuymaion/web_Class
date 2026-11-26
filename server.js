@@ -4,51 +4,54 @@ const path = require("path");
 
 const crypto = require("crypto"); // 產生登入憑證、比對密碼用
 
-// 讀取 .env 裡的設定(密碼放這裡，不要寫在程式碼裡)；沒有這個檔案就略過
+// 讀取.env
 try {
-  process.loadEnvFile(path.join(__dirname, ".env"));
+  process.loadEnvFile(path.join(__dirname, ".env")); // __dirname會自動填server.js所在的路徑
 } catch (err) {}
 
 const app = express(); // 建立server並存在變數app裡
-app.use(express.json()); // 自動把fetch送來的JSON字串轉成物件(放在req.body)
+app.use(express.json()); 
+// .use是每個請求都要做的事
+// 把fetch送來的JSON字串轉成物件(放在req.body)
 app.use(express.static(path.join(__dirname, "public", "html")));
 app.use(express.static(path.join(__dirname, "public")));
+// 上面兩種寫法分別是讓html css js的路徑寫法不同
 
-const FILE = path.join(__dirname, "data.json");
+const FILE = path.join(__dirname, "data.json"); // 存成data.json的路徑字串
 const MAX_VEHICLES = 10;
 const DEFAULT_STATUS = "審查中"; // 新申請的預設狀態
 
-// ---------- 小工具 ----------
-
 // 讀取全部申請；檔案不存在或是空的就回傳 []
 const load = () => {
-  if (!fs.existsSync(FILE)) return [];
-  const text = fs.readFileSync(FILE, "utf8").trim();
+  if (!fs.existsSync(FILE)) return []; // 先確定data.json存在
+  const text = fs.readFileSync(FILE, "utf8").trim(); // 讀成字串
   return text ? JSON.parse(text) : [];
+  // text是空的就回傳[]
 };
 
-// 把整份申請寫回 data.json
-const save = (list) => fs.writeFileSync(FILE, JSON.stringify(list, null, 2));
+// 把整份申請寫回 data.json(覆蓋)
+const save = (list) => fs.writeFileSync(FILE, JSON.stringify(list, null, 2)); // null不篩選欄位，2每個項目縮排兩格
 
-// 任何東西都轉成「去掉頭尾空白的字串」(undefined/null 會變成空字串)
+// 任何東西都轉成「去掉頭尾空白的字串」(undefined/null的話變成""")
 const str = (v) => String(v ?? "").trim();
 
-// 比對手機時去掉空白、減號、括號，所以 0911-111-111 和 0911111111 視為相同
+// g代表全部都換，//裡面放規則，[]裡面任何一個字元都算，\s\-()全部換成""
 const phoneKey = (v) => str(v).replace(/[\s\-()]/g, "");
 
-// 這筆申請的登記人是不是 name + phone
+// 要變動資料的時候要再確認身份
 const isApplicant = (a, name, phone) =>
   str(a.applicantName) === name && phoneKey(a.applicantPhone) === phone;
 
+// 取消或重發通知郵件的時候使用
 // 找出 :id 那筆申請，並確認 body 裡的登記人姓名+手機是對的
-// 找不到、或姓名手機對不上，都回傳 null(不透露「這筆存不存在」)
+// 找不到、或姓名手機對不上，都回傳 null
 const findOwned = (req) => {
-  const name = str(req.body?.name);
+  const name = str(req.body?.name); // 如果 req.body 存在，就拿它的 name
   const phone = phoneKey(req.body?.phone);
   if (!name || !phone) return null;
 
-  const list = load();
-  const application = list.find((a) => String(a.id) === req.params.id);
+  const list = load(); // 讀全部
+  const application = list.find((a) => String(a.id) === req.params.id); // 有找到一樣的就回傳，params裝路由
   if (!application || !isApplicant(application, name, phone)) return null;
   return { list, application };
 };
@@ -57,19 +60,19 @@ const findOwned = (req) => {
 
 // 新增一筆申請
 app.post("/api/applications", (req, res) => {
-  const b = req.body || {};
-  const vehicles = Array.isArray(b.vehicles) ? b.vehicles : [];
+  const b = req.body || {}; // post會包含body
+  const vehicles = Array.isArray(b.vehicles) ? b.vehicles : []; // 確保回傳的vehicles是正確的array
 
   if (vehicles.length > MAX_VEHICLES) {
-    return res.status(400).json({ ok: false, message: `申請車輛至多${MAX_VEHICLES}台` });
+    return res.status(400).json({ ok: false, message: `申請車輛至多${MAX_VEHICLES}台` }); // 超過數量也不能回傳
   }
 
   // 只收需要的欄位(不直接存 req.body，避免多餘或奇怪的資料被寫進檔案)
   const record = {
-    id: Date.now(),
+    id: Date.now(), // id是現在時間
     createdAt: new Date().toISOString(),
     status: DEFAULT_STATUS,
-    debug: b.debug === true,
+    debug: b.debug === true, // debug模式的資料要特別標記
     unit: str(b.unit),
     eventName: str(b.eventName),
     startDate: str(b.startDate),
@@ -88,8 +91,8 @@ app.post("/api/applications", (req, res) => {
   };
 
   const list = load();
-  list.push(record);
-  save(list);
+  list.push(record); // 把新的家到最後面
+  save(list); // 寫回data.json
   res.json({ ok: true, id: record.id });
 });
 
@@ -142,10 +145,10 @@ app.post("/api/query", (req, res) => {
   }
 
   results.sort(byGroupThenDate);
-  res.json({ ok: true, role, results });
+  res.json({ ok: true, role, results }); // 儲存成功後回傳ok
 });
 
-// ---------- 取消 / 重發郵件(只有登記人可以) ----------
+// ---------- 取消 / 重發郵件(登記人才有權限) ----------
 
 // 取消申請：狀態改成「已取消」，資料保留不刪除
 app.post("/api/applications/:id/cancel", (req, res) => {
