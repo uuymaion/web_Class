@@ -46,7 +46,7 @@ const isApplicant = (a, name, phone) =>
 // 找出 :id 那筆申請，並確認 body 裡的登記人姓名+手機是對的
 // 找不到、或姓名手機對不上，都回傳 null
 const findOwned = (req) => {
-  const name = str(req.body?.name); // 如果 req.body 存在，就拿它的 name
+  const name = str(req.body?.name); // 如果 req.body 存在，就拿它的 name，不存在不會報錯，伺服器才不會垮掉
   const phone = phoneKey(req.body?.phone);
   if (!name || !phone) return null;
 
@@ -117,12 +117,10 @@ app.post("/api/query", (req, res) => {
   let results;
 
   if (role === "applicant") {
-    // 登記人：可以看到自己登記的完整資料
-    results = list
+    results = list // 接著下兩行寫
       .filter((a) => isApplicant(a, name, phone))
       .map((a) => ({ ...a, status: a.status || DEFAULT_STATUS, expired: isExpired(a, today) }));
   } else {
-    // 駕駛人：只能看到活動資訊 + 「自己的」車輛，看不到別人的手機或 email
     results = list
       .map((a) => ({
         application: a,
